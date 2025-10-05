@@ -8,3 +8,8 @@
 /prod_copy/
 /.DS_Store
 Thumbs.db
+
+deploy/
+
+scripts/.server.env
+backups/

@@ -1,0 +1,2 @@
+time="2025-10-05T22:23:20+03:00" level=warning msg="/Users/arminasgari/Projects/consultancy-younichoice/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+mysql: [Warning] Using a password on the command line interface can be insecure.

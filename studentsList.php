@@ -15,6 +15,17 @@
 <?php 
     require_once "configDatabase.php";
     
+    $toArray = function ($v): array {
+        if ($v === null) return [];
+        if (is_array($v)) return $v;
+        $s = trim((string)$v);
+        return $s === '' ? [] : array_map('trim', explode(',', $s));
+    };
+    $intList = function(array $arr): array {
+        return array_values(array_unique(array_map(fn($x)=> (int)$x, $arr)));
+    };
+    
+    // remove diacritics function
     if (!function_exists('removeDiacritics')) {
         function removeDiacritics($string) {
             $diacritics = [
