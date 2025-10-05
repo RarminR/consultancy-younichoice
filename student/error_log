@@ -1,0 +1,6 @@
+[19-Jul-2025 09:04:55 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'dataConsultancy-copy.consultants' doesn't exist in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/index.php:41
+Stack trace:
+#0 /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/index.php(41): mysqli_query()
+#1 {main}
+  thrown in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/index.php on line 41
+[19-Jul-2025 09:06:07 UTC] PHP Warning:  Undefined array key "name" in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/index.php on line 514

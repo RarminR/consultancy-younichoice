@@ -1,0 +1,9 @@
+[23-Jul-2025 11:06:09 UTC] PHP Warning:  Undefined variable $accountId in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 65
+[23-Jul-2025 11:06:09 UTC] PHP Warning:  Undefined variable $typeAccount in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 65
+[23-Jul-2025 11:06:18 UTC] PHP Warning:  Undefined variable $accountId in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 65
+[23-Jul-2025 11:06:18 UTC] PHP Warning:  Undefined variable $typeAccount in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 65
+[23-Jul-2025 11:06:39 UTC] PHP Warning:  Undefined variable $accountId in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 65
+[23-Jul-2025 11:06:39 UTC] PHP Warning:  Undefined variable $typeAccount in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 65
+[04-Aug-2025 13:04:49 UTC] PHP Parse error:  syntax error, unexpected token "var" in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 463
+[04-Aug-2025 13:04:50 UTC] PHP Parse error:  syntax error, unexpected token "var" in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 463
+[04-Aug-2025 13:04:51 UTC] PHP Parse error:  syntax error, unexpected token "var" in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/application/index.php on line 463

@@ -1,0 +1,5 @@
+[21-Jul-2025 08:36:21 UTC] PHP Warning:  Undefined variable $accountId in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/meeting/index.php on line 36
+[21-Jul-2025 08:36:21 UTC] PHP Warning:  Undefined variable $typeAccount in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/meeting/index.php on line 36
+[21-Jul-2025 08:36:57 UTC] PHP Warning:  include(navbar.php): Failed to open stream: No such file or directory in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/meeting/index.php on line 125
+[21-Jul-2025 08:36:57 UTC] PHP Warning:  include(navbar.php): Failed to open stream: No such file or directory in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/meeting/index.php on line 125
+[21-Jul-2025 08:36:57 UTC] PHP Warning:  include(): Failed opening 'navbar.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/student/meeting/index.php on line 125

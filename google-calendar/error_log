@@ -1,0 +1,36 @@
+[30-Jul-2025 09:28:06 UTC] PHP Warning:  require_once(configDatabase.php): Failed to open stream: No such file or directory in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/install_google_calendar.php on line 7
+[30-Jul-2025 09:28:06 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'configDatabase.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/install_google_calendar.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/install_google_calendar.php on line 7
+[30-Jul-2025 09:28:12 UTC] PHP Warning:  require_once(configDatabase.php): Failed to open stream: No such file or directory in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/install_google_calendar.php on line 7
+[30-Jul-2025 09:28:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'configDatabase.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/install_google_calendar.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/install_google_calendar.php on line 7
+[31-Jul-2025 10:57:29 UTC] PHP Warning:  Undefined variable $host in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 16
+[31-Jul-2025 10:57:29 UTC] PHP Warning:  Undefined variable $dbname in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 16
+[31-Jul-2025 10:57:29 UTC] PHP Warning:  Undefined variable $username in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 16
+[31-Jul-2025 10:57:29 UTC] PHP Warning:  Undefined variable $password in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 16
+[31-Jul-2025 10:58:42 UTC] PHP Warning:  Undefined variable $host in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 16
+[31-Jul-2025 10:58:42 UTC] PHP Warning:  Undefined variable $dbname in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 16
+[31-Jul-2025 10:58:42 UTC] PHP Warning:  Undefined variable $username in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 16
+[31-Jul-2025 10:58:42 UTC] PHP Warning:  Undefined variable $password in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 16
+[31-Jul-2025 10:59:23 UTC] PHP Warning:  Undefined array key "access_token" in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 39
+[31-Jul-2025 10:59:23 UTC] PHP Warning:  Undefined array key "refresh_token" in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 40
+[31-Jul-2025 10:59:23 UTC] PHP Warning:  Undefined array key "expires_in" in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 41
+[31-Jul-2025 10:59:23 UTC] PHP Warning:  Undefined array key "created" in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_token_refresh.php on line 42
+[04-Aug-2025 12:14:09 UTC] Google Auth: Access token received. Refresh token: YES
+[05-Aug-2025 12:06:12 UTC] PHP Fatal error:  Uncaught Error: Call to private method GoogleCalendarHelper::getCurrentTokenStatus() from global scope in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_force_refresh.php:20
+Stack trace:
+#0 {main}
+  thrown in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_force_refresh.php on line 20
+[05-Aug-2025 12:07:08 UTC] Google Auth: Access token received. Refresh token: YES
+[06-Aug-2025 15:04:07 UTC] PHP Fatal error:  Uncaught Error: Call to private method GoogleCalendarHelper::getCurrentTokenStatus() from global scope in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_force_refresh.php:20
+Stack trace:
+#0 {main}
+  thrown in /home/fgwayvaotdu9/public_html/consult-staging.younichoice.com/google-calendar/test_force_refresh.php on line 20
+[03-Oct-2025 09:41:22 UTC] PHP Fatal error:  Uncaught Error: Call to private method GoogleCalendarHelper::getCurrentTokenStatus() from global scope in /home/fgwayvaotdu9/public_html/internconsultancy.younichoice.com/google-calendar/test_force_refresh.php:20
+Stack trace:
+#0 {main}
+  thrown in /home/fgwayvaotdu9/public_html/internconsultancy.younichoice.com/google-calendar/test_force_refresh.php on line 20
