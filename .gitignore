@@ -1,0 +1,48 @@
+# Error logs
+error_log
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# PHP specific
+*.cache
+*.bak
+*.backup
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Dependencies (if using composer)
+vendor/
+composer.lock
+
+# Uploaded files (if any)
+uploads/
+temp/
+
+# Database dumps
+*.sql
+*.dump
+
+# Configuration files with sensitive data
+config.php
+database.php 

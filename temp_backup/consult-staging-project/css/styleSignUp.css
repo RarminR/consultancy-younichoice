@@ -1,0 +1,121 @@
+
+  
+  /* The message box is shown when the user clicks on the password field */
+#message {
+    display:none;
+    color: #000;
+    position: relative;
+    padding: 20px;
+    padding-top: 0px;
+    /* padding-bottom: 0px; */
+
+    height: 80px;
+    /* margin-top: 10px; */
+    padding-top: 10px;
+}
+
+#message p {
+    /* padding: 5px; */
+    font-size: 14px;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    left: -5px;
+    content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -5px;
+    content: "✖";
+}
+
+#message1 {
+    display:none;
+    color: #000;
+    position: relative;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#message1 p {
+    padding-left: 20px;
+    font-size: 15px;
+}
+
+
+#message-column {
+    float: left;
+    width: 50%;
+    padding-left: 15px;
+}
+
+
+#message-fullName {
+    display:none;
+    color: #000;
+    position: relative;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#message-fullName p {
+    padding-left: 20px;
+    font-size: 15px;
+}
+
+#message-email {
+    display:none;
+    color: #000;
+    position: relative;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#message-email p {
+    padding-left: 20px;
+    font-size: 15px;
+}
+
+#message-phoneNumber {
+    display:none;
+    color: #000;
+    position: relative;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#message-phoneNumber p {
+    padding-left: 20px;
+    font-size: 15px;
+}
+
+
+@media only screen and (max-width: 600px) {
+    #message p {
+        font-size: 13px;
+    }
+
+    #message1 p {
+        font-size: 13px;
+    }
+
+    #message-email p {
+        font-size: 13px;
+    }
+
+    #message-fullName p {
+        font-size: 13px;
+    }
+}
