@@ -1,0 +1,17 @@
+# git/macos
+.git/
+.DS_Store
+
+# secrets on server
+.env
+.env.*
+*.log
+
+# build artifacts
+vendor/
+node_modules/
+
+# caches/uploads (keep if you need them locally)
+storage/
+cache/
+uploads/

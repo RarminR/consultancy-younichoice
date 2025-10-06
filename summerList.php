@@ -38,182 +38,291 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <title>Summer Schools list</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
+    <title>Summer Schools List</title>
 
     <style>
-        :root {
-            --primary-color: #4f235f;
-            --secondary-color: #6c757d;
-            --accent-color: #007bff;
-            --background-color: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
+        /* Summer Schools List Design System Styles */
         body {
-            background-color: #f5f7fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
         #content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
-            margin-top: 100px;
-        }
-
-        #contentStudents {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            padding: 30px;
-            position: relative;
-            z-index: 1;
+            padding: var(--spacing-2xl);
+            min-height: calc(100vh - 120px);
         }
 
         .navbar {
-            height: 80px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
         }
 
-        h1 {
+        .summer-container {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            backdrop-filter: blur(10px);
+        }
+
+        .summer-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .summer-title {
             color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+        }
+
+        .summer-title::before {
+            content: '\f0f2';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-2xl);
+            color: var(--primary-color);
         }
 
         .filter-buttons {
             display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-2xl);
+            justify-content: center;
         }
 
-        .filter-buttons .btn {
+        .filter-btn {
             flex: 1;
-            padding: 12px 24px;
-            font-weight: 500;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            max-width: 300px;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-size: 0.9rem;
         }
 
-        .filter-buttons .btn:hover {
+        .filter-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
+            box-shadow: var(--shadow-lg);
+            text-decoration: none;
         }
 
-        .button1, .button2, .button3 {
-            background-color: var(--primary-color);
-            border: none;
+        .filter-btn.active {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-color: var(--primary-color);
         }
 
-        .button1:hover, .button2:hover, .button3:hover {
-            background-color: #cb1b80;
+        .filter-btn.inactive {
+            background: var(--white);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .filter-btn.inactive:hover {
+            background: var(--primary-color);
+            color: var(--white);
         }
 
         .search-container {
             display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
         }
 
-        #search-bar-name, #search-bar-country {
+        .search-bar {
             flex: 1;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: white;
-            box-shadow: var(--card-shadow);
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-3xl);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
+            position: relative;
         }
 
-        #search-bar-name:focus, #search-bar-country:focus {
+        .search-bar:focus {
             outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
         }
 
-        .list-group-item {
-            margin-bottom: 15px;
-            border-radius: 8px !important;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-            padding: 20px;
-        }
-
-        .list-group-item:hover {
-            box-shadow: var(--hover-shadow);
-            transform: translateY(-2px);
-        }
-
-        .university-name {
-            font-weight: 600;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .university-info {
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-lg);
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--secondary-color);
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-label {
-            font-weight: 600;
-            min-width: 100px;
-            color: var(--primary-color);
-        }
-
-        .commission-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: white;
-        }
-
-        .commission-yes {
-            background-color: #28a745;
-        }
-
-        .commission-no {
-            background-color: #dc3545;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-color);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
+            font-size: var(--font-size-lg);
+            pointer-events: none;
         }
 
         .search-count {
             color: var(--primary-color);
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            padding: var(--spacing-md);
+            background: var(--light-bg);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .summer-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .summer-item {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition-normal);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summer-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .summer-info {
+            flex: 1;
+        }
+
+        .summer-name {
+            color: var(--primary-color);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .summer-name::before {
+            content: '\f0f2';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
+        }
+
+        .summer-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .detail-label {
+            color: var(--secondary-color);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px;
+        }
+
+        .detail-value {
+            color: var(--text-color);
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-base);
+        }
+
+        .commission-badge {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .commission-yes {
+            background: var(--success-light);
+            color: var(--success-dark);
+            border: 1px solid var(--success-color);
+        }
+
+        .commission-no {
+            background: var(--danger-light);
+            color: var(--danger-dark);
+            border: 1px solid var(--danger-color);
+        }
+
+        .btn-view-applications {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+        }
+
+        .btn-view-applications:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-view-applications::after {
+            content: '\f061';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
         }
 
         /* Custom scrollbar */
@@ -222,17 +331,52 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius-sm);
         }
 
         ::-webkit-scrollbar-thumb {
             background: var(--secondary-color);
-            border-radius: 4px;
+            border-radius: var(--border-radius-sm);
         }
 
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                padding: var(--spacing-md);
+            }
+
+            .summer-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            .filter-btn {
+                max-width: none;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .summer-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-lg);
+            }
+
+            .summer-details {
+                width: 100%;
+            }
         }
     </style>
   </head>
@@ -240,29 +384,43 @@
   <?php include("navbar.php"); ?>
 
   <div id="content">
-    <div id="contentStudents">
-        <div class="filter-buttons">
-            <a href="<?php echo $base_url; ?>summerList.php?university-filter=0">
-                <button class="btn btn-primary button1">All Programs</button>
-            </a>
-            <a href="<?php echo $base_url; ?>summerList.php?university-filter=1">
-                <button class="btn btn-primary button2">Commissionable Programs</button>
-            </a>
-            <a href="<?php echo $base_url; ?>summerList.php?university-filter=2">
-                <button class="btn btn-primary button3">Non-Commissionable Programs</button>
-            </a>
+    <div class="summer-container">
+        <div class="summer-header">
+            <h1 class="summer-title">Summer Schools List</h1>
         </div>
 
-        <h1>Summer Schools List</h1>
+        <div class="filter-buttons">
+            <a href="<?php echo $base_url; ?>summerList.php?university-filter=0" class="filter-btn <?php echo (!isset($_GET["university-filter"]) || $_GET["university-filter"] == 0) ? 'active' : 'inactive'; ?>">
+                <i class="fas fa-graduation-cap"></i>
+                All Programs
+            </a>
+            <a href="<?php echo $base_url; ?>summerList.php?university-filter=1" class="filter-btn <?php echo (isset($_GET["university-filter"]) && $_GET["university-filter"] == 1) ? 'active' : 'inactive'; ?>">
+                <i class="fas fa-check-circle"></i>
+                Commissionable Programs
+            </a>
+            <a href="<?php echo $base_url; ?>summerList.php?university-filter=2" class="filter-btn <?php echo (isset($_GET["university-filter"]) && $_GET["university-filter"] == 2) ? 'active' : 'inactive'; ?>">
+                <i class="fas fa-times-circle"></i>
+                Non-Commissionable Programs
+            </a>
+        </div>
 
         <div class="search-container">
-            <input type="text" id="search-bar-name" onkeyup="searchFunction()" placeholder="Search by program name..." title="Type in a name">
-            <input type="text" id="search-bar-country" onkeyup="searchFunction()" placeholder="Search by country..." title="Type in a country">
+            <div style="position: relative; flex: 1;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-bar-name" class="search-bar" onkeyup="searchFunction()" placeholder="Search by program name..." title="Type in a name">
+            </div>
+            <div style="position: relative; flex: 1;">
+                <i class="fas fa-globe search-icon"></i>
+                <input type="text" id="search-bar-country" class="search-bar" onkeyup="searchFunction()" placeholder="Search by country..." title="Type in a country">
+            </div>
         </div>
 
-        <p>There are <span class="search-count"><?php echo $noUniversities; ?></span> summer programs in your search</p>
+        <div class="search-count">
+            <i class="fas fa-graduation-cap"></i>
+            There are <strong><?php echo $noUniversities; ?></strong> summer programs in your search
+        </div>
 
-        <ol id="universities-list" class="list-group list-group-numbered">
+        <ul id="universities-list" class="summer-list">
             <?php
             if (!isset($_GET["university-filter"]) || $_GET["university-filter"] == 0)
                 $sqlUniversities = "SELECT * FROM universities WHERE `institutionType` = 1";
@@ -275,29 +433,29 @@
             $noUniversities = mysqli_num_rows($queryUniversities);
 
             while ($university = mysqli_fetch_assoc($queryUniversities)) { ?>
-                <div class="university">
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="university-name"><?php echo $university['universityName']; ?></div>
-                            <div class="university-info">
-                                <span class="info-label">Country:</span>
-                                <span><?php echo $university['universityCountry']; ?></span>
+                <li class="summer-item">
+                    <div class="summer-info">
+                        <div class="summer-name"><?php echo htmlspecialchars($university['universityName']); ?></div>
+                        <div class="summer-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Country:</span>
+                                <span class="detail-value"><?php echo htmlspecialchars($university['universityCountry']); ?></span>
                             </div>
-                            <div class="university-info">
-                                <span class="info-label">Commission:</span>
+                            <div class="detail-row">
+                                <span class="detail-label">Commission:</span>
                                 <span class="commission-badge <?php echo $university['commission'] != 0 ? 'commission-yes' : 'commission-no'; ?>">
                                     <?php echo $university['commission'] != 0 ? 'Yes' : 'No'; ?>
                                 </span>
                             </div>
                         </div>
-                        <?php $urlUniversity = "university.php?universityId=" . $university['universityId']; ?>
-                        <a href="<?php echo $urlUniversity; ?>">
-                            <button type="button" class="btn btn-primary">See applications</button>
-                        </a>
-                    </li>
-                </div>
+                    </div>
+                    <?php $urlUniversity = "university.php?universityId=" . $university['universityId']; ?>
+                    <a href="<?php echo $urlUniversity; ?>" class="btn-view-applications">
+                        View Applications
+                    </a>
+                </li>
             <?php } ?>
-        </ol>
+        </ul>
     </div>
   </div>
 
@@ -312,22 +470,22 @@
         var filterName = inputName.value.toUpperCase();
         var filterCountry = inputCountry.value.toUpperCase();
         var list = document.getElementById("universities-list");
-        var universities = list.getElementsByClassName("university");
+        var universities = list.getElementsByClassName("summer-item");
         var countDisplay = 0;
 
         for (var i = 0; i < universities.length; i++) {
-            var name = universities[i].getElementsByClassName("university-name")[0].innerHTML;
-            var country = universities[i].getElementsByClassName("university-info")[0].innerText;
+            var name = universities[i].getElementsByClassName("summer-name")[0].innerHTML;
+            var country = universities[i].getElementsByClassName("detail-value")[0].innerText;
 
             if (name.toUpperCase().indexOf(filterName) > -1 && country.toUpperCase().indexOf(filterCountry) > -1) {
-                universities[i].style.display = "";
+                universities[i].style.display = "flex";
                 countDisplay++;
             } else {
                 universities[i].style.display = "none";
             }
         }
 
-        document.getElementsByClassName("search-count")[0].innerHTML = countDisplay;
+        document.getElementsByClassName("search-count")[0].innerHTML = '<i class="fas fa-graduation-cap"></i> There are <strong>' + countDisplay + '</strong> summer programs in your search';
     }
   </script>
 </body>

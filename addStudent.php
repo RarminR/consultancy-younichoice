@@ -370,216 +370,392 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
     <script src="https://unpkg.com/react-phone-number-input@3.x/bundle/react-phone-number-input.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/react-phone-number-input@3.x/bundle/style.css"/>
-
-
-    <title> Add Student</title>
+    <title>Add Student - Youni</title>
 
     <style>
+        /* Add Student Page Design System Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
         #content {
-            width: 70%;
-            margin: auto;
-        }
-        #search-bar {
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
-            background-repeat: no-repeat;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-        }
-        .full-name {
-            font-weight: bold;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+            min-height: calc(100vh - 120px);
         }
 
         .navbar {
-            height: 150px;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
         }
 
-        .badge {
-            /* height: 30px; */
-            font-size: 15px;
-            color: white;
-            background-color: var(--pink) !important;
-            position: fixed;
-            right: 50%;
-        }
-        
-        .fw-bold {
-            font-weight: bold;
+        .add-student-container {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            backdrop-filter: blur(10px);
         }
 
-        .student-info {
-            font-size: 18px;
-            font-weight: bold;
+        .add-student-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--light-gray);
         }
 
-        .title-info {
-            font-weight: bold;
-            color: var(--pink);
-            font-size: 20px;
+        .add-student-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
         }
 
-        .info-row {
-            display: inline; /* the default for span */
+        .add-student-title::before {
+            content: '\f067';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-2xl);
+            color: var(--primary-color);
         }
 
-        .statusSelect {
-            width: 100px;
-            height: 25px;
+        .form-section {
+            background: var(--light-bg);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-gray);
         }
 
-        input[name = "name"] {
-            width: 30%;
+        .form-group {
+            margin-bottom: var(--spacing-xl);
         }
 
-        input[name = "email"] {
-            width: 50%;
+        .form-label {
+            color: var(--primary-color);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
-        input[name = "parentEmail"] {
-            width: 50%;
+        .form-label::before {
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-base);
+            color: var(--primary-color);
         }
 
+        .name-label::before { content: '\f007'; }
+        .email-label::before { content: '\f0e0'; }
+        .parent-email-label::before { content: '\f0e0'; }
+        .school-label::before { content: '\f19c'; }
+        .drive-label::before { content: '\f1c0'; }
+        .phone-label::before { content: '\f3cd'; }
+        .type-label::before { content: '\f0c0'; }
+        .graduation-label::before { content: '\f073'; }
+        .package-label::before { content: '\f1b0'; }
+        .details-label::before { content: '\f15c'; }
+        .consultant-label::before { content: '\f0c0'; }
 
-        input[name = "highSchool"] {
-            width: 60%;
+        .form-control, .form-select, .form-textarea {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
         }
 
-        input[name = "driveLink"] {
-            width: 60%;
+        .form-control:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
         }
 
-        input[name = "phoneNumber"] {
-            width: 40%;
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
         }
 
-        .invalidPhoneNumber {
-            color: red;
+        .radio-group {
+            display: flex;
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-sm);
         }
 
-        .validPhoneNumber {
-            color: green;
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
-        input, select {
-            border-radius: 10px; /* Adjust the value to control the roundness */
-            padding: 8px 12px; /* Adjust padding as needed */
-            border: 1px solid #ccc; /* Add a border for visual distinction */
-        }
-        
         input[type="radio"] {
-            margin-right: 8px;
-            margin-left: 15px;
-        }
-        
-        input[type="radio"]:first-child {
-            margin-left: 0;
-        }
-        
-        label {
-            margin-right: 20px;
-            font-weight: normal;
+            margin: 0;
+            accent-color: var(--primary-color);
+            transform: scale(1.2);
         }
 
+        .radio-item label {
+            margin: 0;
+            font-weight: var(--font-weight-medium);
+            color: var(--text-color);
+            font-size: var(--font-size-base);
+            cursor: pointer;
+        }
+
+        .char-count {
+            color: var(--secondary-color);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .grade-calculation {
+            color: var(--primary-color);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: var(--light-bg);
+            border-radius: var(--border-radius-md);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .phone-validation {
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-xs);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .valid-phone {
+            color: var(--success-color);
+        }
+
+        .invalid-phone {
+            color: var(--danger-color);
+        }
+
+        .btn-submit {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-lg);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-submit::before {
+            content: '\f067';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-base);
+        }
+
+        .alert {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: var(--spacing-lg);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .alert-danger {
+            background: var(--danger-light);
+            color: var(--danger-dark);
+            border: 1px solid var(--danger-color);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: var(--border-radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: var(--border-radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                padding: var(--spacing-md);
+            }
+
+            .add-student-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .form-section {
+                padding: var(--spacing-lg);
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .btn-submit {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
   </head>
 
   
   <?php include("navbar.php"); ?>
 
-  <div id = "content">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+  <div id="content">
+    <div class="add-student-container">
+        <div class="add-student-header">
+            <h1 class="add-student-title">Add Student</h1>
+        </div>
 
-    <h1 style = "color: rgba(79, 35, 95, .9);"> Add Student </h1>
-    <br>
-    <br>
-    <form method = "post" onsubmit = "return validateForm()">
-        <p class = "student-info"> <span class = "title-info"> Student Name: </span> <input type = "text" name = "name" placeholder = "Student's full name" required /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Student's Email: </span> <input type = "email" name = "email" placeholder = "Student's email" required /> </p>
-        <?php
-        if (isset($errorMail)) {
-            ?> <span style = "color: red;"> <?php echo $errorMail; ?> </span> <br> <?php
-        }?>
-        <br>
+        <form method="post" onsubmit="return validateForm()">
+            <div class="form-section">
+                <div class="form-group">
+                    <label class="form-label name-label">Student Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Enter student's full name" required>
+                </div>
 
-        <p class = "student-info"> <span class = "title-info"> Parent's Email: </span> <input type = "email" name = "parentEmail" placeholder = "Parent's email" required /> </p>
-        
-        <br>
-        <p class = "student-info"> <span class = "title-info"> HighSchool: </span> <input type = "text" name = "highSchool" placeholder = "Student's HighSchool" required /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Drive Link: </span> <input value = "#" type = "text" name = "driveLink" placeholder = "Student's Drive Link" required /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Phone number: </span> 
-            <input name = "phoneNumber" type="tel" id="phoneInput" placeholder = "Enter student's phone number" pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$" required>
-            <div id="statusPhoneNumber" class = "invalidPhoneNumber">Invalid phone number</div>
-        </p>
-         <br>
-        <p class="student-info">
-            <span class="title-info">Student Type: </span>
-            <label><input type="radio" name="isBachelor" value="0" required onchange="toggleGraduationInput()"> High School Student</label>
-            <label><input type="radio" name="isBachelor" value="1" required onchange="toggleGraduationInput()"> Bachelor Student</label>
-        </p>
-        <br>
-        <p class="student-info" id="graduationYearSection" style="display: none;">
-            <span class="title-info" id="graduationLabel">Graduation Year: </span>
-            <input type="number" name="graduationYear" id="graduationYearInput" min="2024" max="2030" placeholder="Enter year" required onchange="calculateGrade()">
-            <div id="gradeCalculation" style="margin-top: 10px; font-weight: bold; color: #4f235f;"></div>
-        </p>
-         <br>
-         <p class="student-info">
-            <span class="title-info"> Package type: </span> 
-            <select id="packageSelect" name="package" required onchange="updateTextarea()">
-                <option value="" disabled selected hidden>Select package</option>
-                <option value="US">US</option>
-                <option value="USP">US Premium</option>
-                <option value="USAP">US Advanced Package</option>
-                <option value="EU">Europe</option>
-                <option value="EUP">Europe Premium</option>
-            </select>
-        </p>
-        <br>
-        <p> 
-            <span class="title-info"> Package Details: </span> 
-            <p id="charCount">0 / 1000</p> 
-
-            <textarea id="textBox" name="packageDetails" maxlength="1000" rows="10" cols="50" 
-                    placeholder="Enter package details (max 1000 characters)..." 
-                    oninput="updateCharCount()"></textarea>
-        </p>
-
-
-            <p class = "student-info"> <span class = "title-info"> Consultant: </span> 
-                <select name="consultant" required>
-                    <?php if ($typeAccount == 1) { ?>
-                        <option value="" selected>Select consultant</option>
+                <div class="form-group">
+                    <label class="form-label email-label">Student's Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="Enter student's email" required>
+                    <?php if (isset($errorMail)) { ?>
+                        <div class="alert alert-danger"><?php echo $errorMail; ?></div>
                     <?php } ?>
-                    <?php
-                        for ($i = 0; $i < $nConsultant; $i++) {
-                            ?> <option value="<?php echo $vIdConsultant[$i]; ?> "> <?php echo $vNameConsultant[$i]; ?> </option> <?php
-                        }
-                    ?>
-                </select>
-            </p>
-         <br>
-         <br>
-        <input class="btn btn-primary" type="submit" name = "submit" value="Add student">
-    </form>
+                </div>
 
+                <div class="form-group">
+                    <label class="form-label parent-email-label">Parent's Email</label>
+                    <input type="email" name="parentEmail" class="form-control" placeholder="Enter parent's email" required>
+                </div>
 
+                <div class="form-group">
+                    <label class="form-label school-label">High School</label>
+                    <input type="text" name="highSchool" class="form-control" placeholder="Enter student's high school" required>
+                </div>
 
-    <br>
-    <br>
+                <div class="form-group">
+                    <label class="form-label drive-label">Drive Link</label>
+                    <input type="text" name="driveLink" class="form-control" value="#" placeholder="Enter student's drive link" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label phone-label">Phone Number</label>
+                    <input name="phoneNumber" type="tel" id="phoneInput" class="form-control" placeholder="Enter student's phone number" pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$" required>
+                    <div id="statusPhoneNumber" class="phone-validation invalid-phone">Invalid phone number</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label type-label">Student Type</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" name="isBachelor" value="0" id="highSchool" required onchange="toggleGraduationInput()">
+                            <label for="highSchool">High School Student</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" name="isBachelor" value="1" id="bachelor" required onchange="toggleGraduationInput()">
+                            <label for="bachelor">Bachelor Student</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="graduationYearSection" style="display: none;">
+                    <label class="form-label graduation-label" id="graduationLabel">Graduation Year</label>
+                    <input type="number" name="graduationYear" id="graduationYearInput" class="form-control" min="2024" max="2030" placeholder="Enter year" required onchange="calculateGrade()">
+                    <div id="gradeCalculation" class="grade-calculation"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label package-label">Package Type</label>
+                    <select id="packageSelect" name="package" class="form-select" required onchange="updateTextarea()">
+                        <option value="" disabled selected hidden>Select package</option>
+                        <option value="US">US</option>
+                        <option value="USP">US Premium</option>
+                        <option value="USAP">US Advanced Package</option>
+                        <option value="EU">Europe</option>
+                        <option value="EUP">Europe Premium</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label details-label">Package Details</label>
+                    <div id="charCount" class="char-count">0 / 1000</div>
+                    <textarea id="textBox" name="packageDetails" class="form-textarea" maxlength="1000" placeholder="Enter package details (max 1000 characters)..." oninput="updateCharCount()"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label consultant-label">Consultant</label>
+                    <select name="consultant" class="form-select" required>
+                        <?php if ($typeAccount == 1) { ?>
+                            <option value="" selected>Select consultant</option>
+                        <?php } ?>
+                        <?php
+                            for ($i = 0; $i < $nConsultant; $i++) {
+                                echo '<option value="' . htmlspecialchars($vIdConsultant[$i]) . '">' . htmlspecialchars($vNameConsultant[$i]) . '</option>';
+                            }
+                        ?>
+                    </select>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: var(--spacing-2xl);">
+                <button class="btn-submit" type="submit" name="submit">
+                    Add Student
+                </button>
+            </div>
+        </form>
+    </div>
+  </div>
 
 
     <!-- Optional JavaScript -->
@@ -607,27 +783,25 @@
             const phoneNumber = phoneInput.value;
             
             if (validatePhoneNumber(phoneNumber)) {
-                invalidPhoneNumberDisplay.textContent = 'Valid phnoe number';
-                invalidPhoneNumberDisplay.classList.remove("invalidPhoneNumber");
-                invalidPhoneNumberDisplay.classList.add("validPhoneNumber");
-
+                invalidPhoneNumberDisplay.textContent = 'Valid phone number';
+                invalidPhoneNumberDisplay.classList.remove("invalid-phone");
+                invalidPhoneNumberDisplay.classList.add("valid-phone");
             } else {
                 invalidPhoneNumberDisplay.textContent = 'Invalid phone number';
-                invalidPhoneNumberDisplay.classList.add("invalidPhoneNumber");
-                invalidPhoneNumberDisplay.classList.remove("validPhoneNumber");
+                invalidPhoneNumberDisplay.classList.add("invalid-phone");
+                invalidPhoneNumberDisplay.classList.remove("valid-phone");
             }
         });
 
         function validateForm() {
             var phoneNumberInput = document.getElementById("phoneInput");
-            var phoneNumberPattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
             
             if (validatePhoneNumber(phoneNumberInput.value)) {
-                return true; // prevent form submission
+                return true; // allow form submission
             }
 
             invalidPhoneNumberDisplay.classList.add("fw-bold");
-            return false; // allow form submission
+            return false; // prevent form submission
         }
     </script>
     <script>

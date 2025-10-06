@@ -1,23 +1,12 @@
 <?php
-/* Database credentials. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'armin');
-define('DB_PASSWORD', 'sall1385');
+$env    = getenv('APP_ENV') ?: 'development';
+$host   = getenv('DB_HOST') ?: 'db-dev';
+$port   = (int)(getenv('DB_PORT') ?: 3306);
+$dbname = getenv('DB_NAME') ?: 'myapp_dev';
+$user   = getenv('DB_USER') ?: 'dev';
+$pass   = getenv('DB_PASS') ?: 'devpass';
 
-if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'consult-staging.younichoice.com') {
-    $base_url = "https://consult-staging.younichoice.com/";
-    define('DB_NAME', 'dataConsultancy-copy');
-} else {
-    $base_url = "https://internconsultancy.younichoice.com/";
-    define('DB_NAME', 'dataConsultancy');
-}
+$link = mysqli_connect($host, $user, $pass, $dbname, $port);
+if (!$link) { die('DB connect error: ' . mysqli_connect_error()); }
 
-/* Attempt to connect to MySQL database */
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
- 
-// Check connection
-if($link === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
-}
-?>
+$base_url = getenv('BASE_URL') ?: "http://localhost:8082/";

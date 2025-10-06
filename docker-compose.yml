@@ -1,0 +1,122 @@
+name: consultancy-younichoice
+
+services:
+  app-dev:
+    build: .
+    profiles: ["dev"]
+    ports: ["8082:80"]             # dev app
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_ENV: development
+      DB_HOST: db-dev
+      DB_PORT: "3306"
+      DB_NAME: myapp_dev
+      DB_USER: dev
+      DB_PASS: devpass
+      BASE_URL: http://localhost:8082/
+    depends_on: [db-dev]
+
+  db-dev:
+    image: mysql:8.0
+    profiles: ["dev"]
+    environment:
+      MYSQL_DATABASE: myapp_dev
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: devpass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports: ["3307:3306"]
+    volumes:
+      - ./_data/mysql-dev:/var/lib/mysql
+    command: ["--default-authentication-plugin=mysql_native_password"]
+
+  pma-dev:
+    image: phpmyadmin/phpmyadmin
+    profiles: ["dev"]
+    environment:
+      PMA_HOST: db-dev
+      PMA_USER: dev
+      PMA_PASSWORD: devpass
+      UPLOAD_LIMIT: 512M
+    ports: ["8083:80"]             # dev phpMyAdmin (moved off 8081 if needed)
+    depends_on: [db-dev]
+
+  app-stg:
+    build: .
+    profiles: ["staging"]
+    ports: ["8085:80"]
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_ENV: staging
+      DB_HOST: db-stg
+      DB_PORT: "3306"
+      DB_NAME: myapp_stg
+      DB_USER: stg
+      DB_PASS: stgpass
+      BASE_URL: http://localhost:8085/
+    depends_on: [db-stg]
+
+  db-stg:
+    image: mysql:8.0
+    profiles: ["staging"]
+    environment:
+      MYSQL_DATABASE: myapp_stg
+      MYSQL_USER: stg
+      MYSQL_PASSWORD: stgpass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports: ["3308:3306"]
+    volumes:
+      - ./_data/mysql-stg:/var/lib/mysql
+    command: ["--default-authentication-plugin=mysql_native_password"]
+
+  pma-stg:
+    image: phpmyadmin/phpmyadmin
+    profiles: ["staging"]
+    environment:
+      PMA_HOST: db-stg
+      PMA_USER: stg
+      PMA_PASSWORD: stgpass
+      UPLOAD_LIMIT: 512M
+    ports: ["8086:80"]
+    depends_on: [db-stg]
+
+  app-prod:
+    build: .
+    profiles: ["prod"]
+    ports: ["8090:80"]
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_ENV: production
+      DB_HOST: db-prod
+      DB_PORT: "3306"
+      DB_NAME: myapp_prod
+      DB_USER: prod
+      DB_PASS: prodpass
+      BASE_URL: http://localhost:8090/
+    depends_on: [db-prod]
+
+  db-prod:
+    image: mysql:8.0
+    profiles: ["prod"]
+    environment:
+      MYSQL_DATABASE: myapp_prod
+      MYSQL_USER: prod
+      MYSQL_PASSWORD: prodpass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports: ["3309:3306"]
+    volumes:
+      - ./_data/mysql-prod:/var/lib/mysql
+    command: ["--default-authentication-plugin=mysql_native_password"]
+
+  pma-prod:
+    image: phpmyadmin/phpmyadmin
+    profiles: ["prod"]
+    environment:
+      PMA_HOST: db-prod
+      PMA_USER: prod
+      PMA_PASSWORD: prodpass
+      UPLOAD_LIMIT: 512M
+    ports: ["8091:80"]
+    depends_on: [db-prod]

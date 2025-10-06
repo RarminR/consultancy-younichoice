@@ -127,150 +127,458 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <title>Application</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
+    <title>Application Details</title>
 
     <style>
+        /* Application Details Design System Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
         #content {
-            width: 70%;
-            margin: auto;
-        }
-        #search-bar {
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
-            background-repeat: no-repeat;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-        }
-        .full-name {
-            font-weight: bold;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+            min-height: calc(100vh - 120px);
         }
 
         .navbar {
-            height: 150px;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
         }
 
-        .badge {
-            /* height: 30px; */
-            font-size: 15px;
-            color: white;
-            background-color: var(--pink) !important;
-            position: absolute;
-            right: 50%;
-        }
-        
-        .fw-bold {
-            font-weight: bold;
+        .application-header {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            margin-bottom: var(--spacing-lg);
+            backdrop-filter: blur(10px);
         }
 
-        .student-info {
-            font-size: 18px;
-            font-weight: bold;
+        .application-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
-        .title-info {
-            font-weight: bold;
-            color: var(--pink);
-            font-size: 20px;
+        .application-title::before {
+            content: '\f0f6';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
         }
 
-        .info-row {
-            display: inline; /* the default for span */
+        .info-section {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            margin-bottom: var(--spacing-lg);
         }
 
-        .statusSelect {
-            width: 100px;
-            height: 25px;
+        .section-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
+        .section-title::before {
+            content: '\f007';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-lg);
+        }
+
+        .university-section .section-title::before {
+            content: '\f19c';
+        }
+
+        .checklist-section .section-title::before {
+            content: '\f0ae';
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            padding: var(--spacing-md);
+            background: var(--light-bg);
+            border-radius: var(--border-radius-md);
+            border-left: 3px solid var(--primary-color);
+            transition: var(--transition-normal);
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .info-label {
+            color: var(--secondary-color);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .info-value {
+            color: var(--text-color);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .info-value a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition-normal);
+        }
+
+        .info-value a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--white);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .status-in-progress {
+            background: var(--warning-gradient);
+        }
+
+        .status-accepted {
+            background: var(--success-gradient);
+        }
+
+        .status-rejected {
+            background: var(--danger-gradient);
+        }
+
+        .status-waitlisted {
+            background: var(--secondary-gradient);
+        }
+
+        .status-enrolled {
+            background: var(--success-gradient);
+        }
+
+        .checklist-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            margin-bottom: var(--spacing-lg);
+            overflow: hidden;
+        }
+
+        .checklist-header {
+            background: var(--warning-gradient);
+            color: var(--white);
+            padding: var(--spacing-lg);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .checklist-header::before {
+            content: '\f0ae';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        .checklist-body {
+            padding: var(--spacing-lg);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            background: var(--light-bg);
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition-normal);
+        }
+
+        .checklist-item:hover {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .checklist-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checklist-name {
+            flex: 1;
+            color: var(--text-color);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .checklist-type {
+            color: var(--info-color);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            margin-right: var(--spacing-sm);
+        }
+
+        .checklist-type.extra {
+            color: var(--info-color);
+        }
+
+        .checklist-type.university {
+            color: var(--warning-color);
+        }
+
+        .checklist-status {
+            background: var(--primary-gradient);
+            color: var(--white);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-lg);
+            border-top: 2px solid var(--light-gray);
+        }
+
+        .btn-edit {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            transition: var(--transition-normal);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-edit::before {
+            content: '\f044';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
+        }
+
+        .alert {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid transparent;
+            font-weight: var(--font-weight-medium);
+        }
+
+        .alert-danger {
+            background: var(--danger-light);
+            color: var(--danger-dark);
+            border-color: var(--danger-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                padding: var(--spacing-md);
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .application-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .checklist-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+            }
+        }
     </style>
   </head>
 
   
   <?php include("navbar.php"); ?>
 
-  <div id = "content">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-
-    
-    <?php
+  <div id="content">
+    <div class="application-header">
+        <h1 class="application-title">Application Details</h1>
+        
+        <?php
         if (isset($_SESSION["error"])) {
-            ?> <p style = "color: red">  <?php echo $_SESSION["error"]; ?> </p> <?php
+            echo '<div class="alert alert-danger">' . $_SESSION["error"] . '</div>';
             unset($_SESSION['error']);
         }
-    ?>
-    <p class = "student-info"> <span class = "title-info"> Applying Student: </span> <a href = "<?php echo 'student.php?studentId='.$studentId; ?>"><?php echo $dataStudent['name']; ?> </a> </p>
-    <p class = "student-info"> <span class = "title-info"> Class: </span> <?php echo calculateCurrentGrade($dataStudent); ?> </p>
-    <p class = "student-info"> <span class = "title-info"> HighSchool: </span> <?php echo $dataStudent['highSchool']; ?> </p>
-    <p class = "student-info"> <span class = "title-info"> Consultant: </span> <a href = "<?php echo 'consultant.php?consultantId='.$dataStudent['consultantId']; ?>"><?php echo $dataStudent['consultantName']; ?> </a> </p>
+        ?>
+    </div>
 
-    <br>
-    <br>
+    <div class="info-section">
+        <h2 class="section-title">Student Information</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Applying Student</div>
+                <div class="info-value">
+                    <a href="<?php echo 'student.php?studentId='.$studentId; ?>"><?php echo $dataStudent['name']; ?></a>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Current Class</div>
+                <div class="info-value"><?php echo calculateCurrentGrade($dataStudent); ?></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">High School</div>
+                <div class="info-value"><?php echo $dataStudent['highSchool']; ?></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Consultant</div>
+                <div class="info-value">
+                    <a href="<?php echo 'consultant.php?consultantId='.$dataStudent['consultantId']; ?>"><?php echo $dataStudent['consultantName']; ?></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <p class = "student-info"> <span class = "title-info"> Univeristy name: </span> <a href = "<?php echo 'university.php?universityId='.$universityId; ?>"><?php echo $universityName; ?> </a> </p>
-    <p class = "student-info"> <span class = "title-info"> Univeristy country: </span> <?php echo $universityCountry; ?> </p>
-    <p class = "student-info"> <span class = "title-info"> Univeristy commission: </span> <?php echo $universityCommission; ?> </p>
-
-    <p class = "student-info"> <span class = "title-info"> Application Status: </span> <span style = "color: <?php echo $colorStatus; ?>"> <?php echo $status; ?> </span> </p>
-
-    <?php
-    if ($status == "Accepted") { ?>
-        <p class = "student-info"> <span class = "title-info"> Scholarship: </span> <span> <?php echo $applicationData['scholarship'] . "$"; ?> </span> </p>
-    <?php
-    }
-    ?>
+    <div class="info-section university-section">
+        <h2 class="section-title">University Information</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">University Name</div>
+                <div class="info-value">
+                    <a href="<?php echo 'university.php?universityId='.$universityId; ?>"><?php echo $universityName; ?></a>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Country</div>
+                <div class="info-value"><?php echo $universityCountry; ?></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Commission</div>
+                <div class="info-value"><?php echo $universityCommission; ?></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Application Status</div>
+                <div class="info-value">
+                    <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $status)); ?>">
+                        <?php echo $status; ?>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <?php if ($status == "Accepted") { ?>
+            <div class="info-item" style="margin-top: var(--spacing-lg);">
+                <div class="info-label">Scholarship</div>
+                <div class="info-value" style="color: var(--success-color); font-size: var(--font-size-xl); font-weight: var(--font-weight-bold);">
+                    <?php echo $applicationData['scholarship'] . "$"; ?>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
 
     <?php
     // Fetch checklist items for this application
     $sqlChecklist = "SELECT ac.checklistId, ac.isCustom, ac.status, c.checklistName FROM applications_checklist ac LEFT JOIN checklist c ON ac.checklistId = c.checklistId WHERE ac.applicationId = $applicationId";
     $queryChecklist = mysqli_query($link, $sqlChecklist);
     ?>
-    <br>
-    <div class="card mb-3">
-        <div class="card-header" style="background-color: #f0ad4e; color: white; font-weight: bold; font-size: 18px;">Application Checklist</div>
-        <div class="card-body">
-            <?php if (mysqli_num_rows($queryChecklist) > 0) { ?>
-                <ul class="list-group">
-                <?php while ($checklist = mysqli_fetch_assoc($queryChecklist)) { ?>
-                    <li class="list-group-item">
-                        <div style="display: flex; align-items: center; width: 100%;">
-                            <span style="flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                <strong style="color: <?php echo ((int)$checklist['isCustom'] === 1) ? '#5bc0de' : '#f0ad4e'; ?>"><?php echo ((int)$checklist['isCustom'] === 1) ? 'Extra Checklist Item: ' : 'University Checklist Item: '; ?></strong>
+    <div class="info-section checklist-section">
+        <h2 class="section-title">Application Checklist</h2>
+        <div class="checklist-card">
+            <div class="checklist-header">Application Checklist</div>
+            <div class="checklist-body">
+                <?php if (mysqli_num_rows($queryChecklist) > 0) { ?>
+                    <?php while ($checklist = mysqli_fetch_assoc($queryChecklist)) { ?>
+                        <div class="checklist-item">
+                            <div class="checklist-name">
+                                <span class="checklist-type <?php echo ((int)$checklist['isCustom'] === 1) ? 'extra' : 'university'; ?>">
+                                    <?php echo ((int)$checklist['isCustom'] === 1) ? 'Extra Checklist Item: ' : 'University Checklist Item: '; ?>
+                                </span>
                                 <?php echo htmlspecialchars($checklist['checklistName'] ? $checklist['checklistName'] : $checklist['checklistId']); ?>
-                            </span>
-                            <span class="badge badge-pill" style="background-color: #c61b75; color: white; font-size: 15px; margin-left: auto;">
+                            </div>
+                            <span class="checklist-status">
                                 <?php echo htmlspecialchars($checklist['status']); ?>
                             </span>
                         </div>
-                    </li>
+                    <?php } ?>
+                <?php } else { ?>
+                    <div class="checklist-item">
+                        <div class="checklist-name">No checklist items found for this application.</div>
+                    </div>
                 <?php } ?>
-                </ul>
-            <?php } else { ?>
-                <p class="mb-0">No checklist items found for this application.</p>
-            <?php } ?>
+            </div>
         </div>
     </div>
-    <br>
 
-    <a href = <?php echo "editApplication.php?applicationId=".$applicationId; ?> > <button class = "btn btn-primary"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-</svg> Edit application status </button> </a>
-
-
-    <br>
-    <br>
-    <!-- <a href = "addAplication.php" > <button class = "btn btn-primary"> <i class="fa-solid fa-plus"></i> Add application </button> </a> -->
-
-    <br>
-    <br>
+    <div class="action-buttons">
+        <a href="<?php echo "editApplication.php?applicationId=".$applicationId; ?>" class="btn-edit">
+            Edit Application Status
+        </a>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

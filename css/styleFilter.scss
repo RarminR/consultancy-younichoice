@@ -1,0 +1,253 @@
+$grid: 20px;
+$border-radius: 2px;
+$green: #3D9970;
+$red: #FF4136;
+$blue: #0074D9;
+$maincolor: #FF851B;
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+.clearfix::before,
+.clearfix::after {
+  content: " ";
+  display: table;
+} 
+
+.clearfix::after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1; /* Für den IE6 und IE7 */
+}
+
+.vh {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: fixed;
+    width: 1px;
+}
+
+.hide-item {
+  visibility: hidden;
+  width: 0;
+  transition: 0s .2s;
+
+  span {
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(.9);
+  }
+}
+
+.show-item {
+  visibility: visible;
+  width: 33.3333%;
+  transition: 0s;
+
+  span {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1);
+    }
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  font-weight: 100;
+  font-size: 18px;
+  line-height: 1;
+  padding: $grid 0;
+  background: #eee;
+}
+
+.filter {
+  background: #fff;
+  max-width: 40em;
+  margin: auto;
+  display: flex;
+  border-radius: $border-radius;
+  box-shadow: 1px 1px 2px 2px rgba(0,0,0,.025);
+  
+  input[type="checkbox"] {
+    @extend .vh;
+    
+    @each $filter-type in all, number, letter, red, blue, green, border {
+      &##{$filter-type}:focus ~ .filter__control {
+        .filter__button[for="#{$filter-type}"] {
+          outline: rgba($maincolor,.5) solid 1px;
+        }
+      }
+    }
+  }
+  
+  &__control {
+    flex: 1;
+    padding: $grid*2 0;
+    background: lighten($maincolor, 43%);
+    
+    h3 {
+      padding: 0 20px $grid;
+      text-transform: uppercase;
+      color: #a2a2a2;
+      font-size: 12px;
+      line-height: 1;
+      margin: 0;
+    }
+  }
+  
+  &__button {
+    display: block;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+    transition: .2s ease-in-out;
+    
+    &:before {
+      content: '';
+      display: block;
+      background: $maincolor;
+      opacity: .5;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 10px;
+      transform: translateX(-10px);
+      transition: .2s ease-in-out;
+    }
+    
+    &:hover {
+      padding-left: 25px;
+      
+      &:before {
+        transform: translateX(-5px);
+      }
+    }
+    
+    &.disabled {
+      color: #ccc;
+      padding-left: 20px !important;
+      background: none !important;
+      cursor: default;
+      pointer-events: none;
+      
+      &:before {
+        background: #ccc;
+        opacity: 1;
+        transform: translateX(-10px) !important;
+      }
+    }
+  }
+  
+  &__content {
+    width: 75%;
+  }
+  
+  &__list {
+    list-style-type: none;
+    margin: 0;
+    padding: $grid;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  &__item {
+    position: relative;
+    width: 33.3333%;
+    
+    &:before {
+      content: '';
+      display: block;
+      padding-top: 100%;
+    }
+    
+    span {
+      display: flex;
+      position: absolute;
+      top: $grid;
+      bottom: $grid;
+      left: $grid;
+      right: $grid;
+      background: #eee;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 50px;
+      font-weight: 300;
+      border-radius: $border-radius;
+      transition: .2s;
+    }
+    
+    &[data-filter*="red"] span {
+      background: $red;
+    }
+    
+    &[data-filter*="blue"] span {
+      background: $blue;
+    }
+    
+    &[data-filter*="green"] span {
+      background: $green;
+    }
+    
+    &[data-filter*="border"] span {
+      border: $grid/2 solid rgba(255,255,255,.75);
+    }
+  }
+}
+
+@each $filter-type in number, letter, red, blue, green, border {
+  input[type="checkbox"]##{$filter-type}:checked {
+    & ~ .filter__control {
+      .filter__button[for="#{$filter-type}"] {
+        background: #fff;
+        padding-left: 30px;
+
+        &:before {
+          transform: translateX(0px);
+        }
+      }
+    }
+
+    & ~ .filter__content .filter__item:not([data-filter*="#{$filter-type}"]) {
+      @extend .hide-item;
+    }
+  }
+}
+
+input[type="checkbox"]#all:checked {
+  & ~ input[type="checkbox"] {
+    display: none;
+  }
+  
+  & ~ .filter__control {
+    .filter__button[for="all"] {
+      background: #fff;
+      padding-left: 30px;
+
+      &:before {
+        transform: translateX(0px);
+      }
+    }
+    
+    .filter__button:not([for="all"]) {
+      @extend .disabled;
+    }
+  }
+  
+  
+  & ~ .filter__content .filter__item[data-filter] {
+    @extend .show-item;
+  }
+}

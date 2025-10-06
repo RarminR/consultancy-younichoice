@@ -13,98 +13,6 @@
         return $colorStatus;
     }
 
-    function generateStudentHashLink($email) {
-        // Generate a unique hash based on email and current timestamp
-        $hash = hash('sha256', $email . time() . uniqid());
-        return $hash;
-    }
-
-    function sendStudentAccountCreationEmail($to, $studentName, $accountCreationLink) {
-        $apiKey = 're_6XaDD7dc_2ZLrH3sHnrQhdnFnzPJsdiG9';
-        $url = 'https://api.resend.com/emails';
-    
-        $subject = "Creați-vă contul - Youni Choice";
-        
-        $message = "
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset='UTF-8'>
-            <title>$subject</title>
-            <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { background-color: #4f235f; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; }
-                .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-                .btn { display: inline-block; background-color: #4f235f; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-                .btn:hover { background-color: #3a1a47; }
-                .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
-            </style>
-        </head>
-        <body>
-            <div class='container'>
-                <div class='header'>
-                    <h1>Bun venit la Youni Choice!</h1>
-                </div>
-                <div class='content'>
-                    <p>Bună, <strong>$studentName</strong>,</p>
-                    <p>Vă mulțumim că ați ales să lucrați cu echipa noastră pentru viitorul dumneavoastră academic!</p>
-                    <p>Pentru a începe să vă folosiți serviciile noastre, vă rugăm să vă creați un cont personalizat în platforma noastră.</p>
-                    <p><strong>Contul dumneavoastră vă va permite să:</strong></p>
-                    <ul>
-                        <li>Accesați materialele și resursele personalizate</li>
-                        <li>Comunicați direct cu consultantul dumneavoastră</li>
-                        <li>Urmăriți progresul și programările</li>
-                        <li>Accesați documentele și fișierele importante</li>
-                    </ul>
-                    <p style='text-align: center;'>
-                        <a href='$accountCreationLink' class='btn'>Creați-vă contul acum</a>
-                    </p>
-                    <p><strong>Link direct:</strong> <a href='$accountCreationLink'>$accountCreationLink</a></p>
-                    <p><em>Notă: Acest link este unic și personal. Nu îl partajați cu alții.</em></p>
-                    <p>Dacă aveți întrebări sau întâmpinați probleme, nu ezitați să ne contactați la <strong>office@younichoice.com</strong>.</p>
-                    <p>Vă dorim mult succes în călătoria dumneavoastră academică!</p>
-                </div>
-                <div class='footer'>
-                    <p><strong>Echipa Youni Choice</strong></p>
-                    <p>office@younichoice.com</p>
-                </div>
-            </div>
-        </body>
-        </html>
-        ";
-    
-        $data = [
-            'from' => 'Youni Choice <office@younichoice.com>',
-            'to' => [$to],
-            'subject' => $subject,
-            'html' => $message,
-        ];
-    
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $apiKey,
-        ]);
-    
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($ch);
-        curl_close($ch);
-        
-        // Log the response for debugging
-        error_log("Account Creation Email Response: " . $response);
-        error_log("Account Creation Email HTTP Code: " . $httpCode);
-        if ($error) {
-            error_log("Account Creation Email cURL Error: " . $error);
-        }
-    
-        return $response;
-    }
-
     session_start();
     require_once "configDatabase.php";
 
@@ -138,78 +46,6 @@
     if (!($dataStudent['consultantId'] == $accountId || $typeAccount == 1)) { // testez daca are acces userul la studentul dat
         header("location: index.php");
         die();
-    }
-
-    // Handle email sending
-    $emailMessage = '';
-    $emailError = '';
-    
-    if (isset($_POST['send_account_email']) && isset($_POST['student_id'])) {
-        $studentIdToEmail = $_POST['student_id'];
-        
-        // Verify the student belongs to the current user or user is admin
-        if ($dataStudent['studentId'] == $studentIdToEmail && ($dataStudent['consultantId'] == $accountId || $typeAccount == 1)) {
-            // Check if student already has an account (studentPassword is not null/empty)
-            if (!empty($dataStudent['studentPassword'])) {
-                $emailError = "This student already has an account created. No need to send account creation email.";
-            }
-            // Check if student has email
-            else if (!empty($dataStudent['email'])) {
-                // Generate hash link if it doesn't exist
-                $studentHashLink = $dataStudent['studentHashLink'];
-                if (empty($studentHashLink)) {
-                    $studentHashLink = generateStudentHashLink($dataStudent['email']);
-                    
-                    // Update the database with the new hash link
-                    $updateSql = "UPDATE studentData SET studentHashLink = '$studentHashLink' WHERE studentId = '$studentId'";
-                    if (!mysqli_query($link, $updateSql)) {
-                        $emailError = "Failed to generate account creation link.";
-                    } else {
-                        // Update the local data for the account creation link
-                        $dataStudent['studentHashLink'] = $studentHashLink;
-                    }
-                }
-                
-                // Create the full account creation link
-                $accountCreationLink = "https://" . $_SERVER['HTTP_HOST'] . "/student/onboarding?hash=" . $studentHashLink;
-                
-                if (empty($emailError)) {
-                    $response = sendStudentAccountCreationEmail($dataStudent['email'], $dataStudent['name'], $accountCreationLink);
-                    
-                    // Parse response to check if email was sent successfully
-                    $responseData = json_decode($response, true);
-                    if ($responseData && isset($responseData['id'])) {
-                        $emailMessage = "Account creation email sent successfully to " . htmlspecialchars($dataStudent['email']) . "!";
-                    } else {
-                        $emailError = "Failed to send email. Please try again.";
-                    }
-                }
-            } else {
-                $emailError = "Student email is missing.";
-            }
-        } else {
-            $emailError = "Unauthorized access to student data.";
-        }
-        
-        // Redirect to prevent double submission on page refresh
-        $redirectUrl = "student.php?studentId=" . $studentId;
-        if (!empty($emailMessage)) {
-            $redirectUrl .= "&email_success=" . urlencode($emailMessage);
-        }
-        if (!empty($emailError)) {
-            $redirectUrl .= "&email_error=" . urlencode($emailError);
-        }
-        
-        header("Location: " . $redirectUrl);
-        exit();
-    }
-    
-    // Handle success/error messages from redirect
-    if (isset($_GET['email_success'])) {
-        $emailMessage = $_GET['email_success'];
-    }
-    if (isset($_GET['email_error'])) {
-        $emailError = $_GET['email_error'];
     }
 
     // for Universities
@@ -359,582 +195,302 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Design System CSS -->
-    <link rel="stylesheet" href="student/design-system.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    <title>Student - <?php echo $dataStudent["name"]; ?></title>
+    <title>Student <?php echo $dataStudent["name"]; ?></title>
 
     <style>
-        /* Student Page Specific Styles */
         #content {
-            width: 90%;
-            max-width: 1200px;
+            width: 70%;
             margin: auto;
-            padding: var(--spacing-lg);
         }
-
-        .search-bar-name,
+        .search-bar-name {
+            background-image: url('/css/searchicon.png');
+            background-position: 10px 12px;
+            background-repeat: no-repeat;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+        }
         .search-bar-country {
             background-image: url('/css/searchicon.png');
             background-position: 10px 12px;
             background-repeat: no-repeat;
             width: 100%;
-            font-size: var(--font-size-base);
-            padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-sm) var(--spacing-3xl);
-            border: 2px solid var(--light-gray);
-            border-radius: var(--border-radius-lg);
-            margin-bottom: var(--spacing-sm);
-            transition: var(--transition-normal);
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
         }
-
-        .search-bar-name:focus,
-        .search-bar-country:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 35, 95, 0.1);
-        }
-
         .full-name {
-            font-weight: var(--font-weight-bold);
-            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .navbar {
+            height: 150px;
+        }
+
+        .badge {
+            /* height: 30px; */
+            font-size: 15px;
+            color: white;
+            background-color: var(--pink) !important;
+            position: absolute;
+            right: 50%;
+        }
+        
+        .fw-bold {
+            font-weight: bold;
         }
 
         .student-info {
-            font-size: var(--font-size-lg);
-            font-weight: var(--font-weight-semibold);
-            color: var(--dark-gray);
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .title-info {
-            font-weight: var(--font-weight-bold);
-            color: var(--primary-color);
-            font-size: var(--font-size-xl);
+            font-weight: bold;
+            color: var(--pink);
+            font-size: 20px;
         }
 
         .info-row {
-            display: inline;
+            display: inline; /* the default for span */
         }
 
         .statusSelect {
-            width: 120px;
-            height: 36px;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border: 2px solid var(--light-gray);
-            border-radius: var(--border-radius-lg);
-            font-size: var(--font-size-sm);
-            transition: var(--transition-normal);
-        }
-
-        .statusSelect:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 35, 95, 0.1);
+            width: 100px;
+            height: 25px;
         }
 
         .comissionable-filter {
             display: flex;
             align-items: center;
-            margin-bottom: var(--spacing-sm);
-            margin-left: var(--spacing-xs);
+            margin-bottom: 5px; /* Adjust margin as needed */
+            margin-left: 3px;
         }
 
-        .comissionable-filter label {
-            padding-top: var(--spacing-xs);
-            padding-left: var(--spacing-xs);
-            font-weight: var(--font-weight-normal);
-            color: var(--secondary-color);
-            font-size: var(--font-size-sm);
+        label {
+            padding-top: 4.5px;
+            padding-left: 3px;
+            font-weight: normal;
         }
 
-        .comissionable-filter input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary-color);
-            margin-right: var(--spacing-sm);
-        }
+    </style>
+    <style>
 
         /* Navigation Buttons */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
-            margin-bottom: var(--spacing-lg);
-            flex-wrap: wrap;
-            gap: var(--spacing-sm);
+            margin-bottom: 20px;
         }
 
         .tab-button {
-            padding: var(--spacing-sm) var(--spacing-lg);
-            border-radius: var(--border-radius-lg);
-            border: 2px solid var(--light-gray);
-            background: var(--white);
-            color: var(--secondary-color);
-            font-weight: var(--font-weight-medium);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 45%;
+            text-align: center;
             cursor: pointer;
-            transition: var(--transition-normal);
-            text-decoration: none;
-            display: inline-block;
+            border: 2px solid #007bff;
+            background-color: white;
+            color: #007bff;
+            font-weight: bold;
         }
 
         .tab-button:hover {
-            background: var(--light-bg);
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            text-decoration: none;
+            background: #e0e0e0;
         }
 
+        /* Active Button (Selected) */
         .tab-button.active {
-            background: var(--primary-color);
-            color: var(--white);
-            border-color: var(--primary-color);
+            background: #007bff;
+            color: white;
         }
 
-        /* Content Sections */
+        /* Hide All Sections Initially */
         .content-section {
             display: none;
-            background: var(--white);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-2xl);
-            box-shadow: var(--shadow-md);
-            margin-bottom: var(--spacing-2xl);
+            text-align: center;
         }
 
-        .content-section.visible {
+        /* Show only the selected section */
+        .visible {
             display: block;
         }
 
-        .section-title {
-            color: var(--primary-color);
-            font-size: var(--font-size-3xl);
-            font-weight: var(--font-weight-bold);
-            margin-bottom: var(--spacing-xl);
+        /* Card Styles */
+        .card {
+            background: #e9e9e9;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
             text-align: center;
         }
 
-        /* Search and Filter */
-        .search-container {
-            display: flex;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
-            flex-wrap: wrap;
+        .card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
         }
 
-        .filter-container {
-            display: flex;
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-            flex-wrap: wrap;
+        .card p {
+            color: #555;
+            font-size: 14px;
+            margin: 5px 0;
         }
 
-        .filter-item {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .filter-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary-color);
-        }
-
-        .filter-item label {
-            font-weight: var(--font-weight-medium);
-            color: var(--secondary-color);
-            margin: 0;
-            font-size: var(--font-size-sm);
-        }
-
-        /* List Groups */
-        .list-group-item {
+        /* Buttons */
+        .tab-button {
             border: none;
-            border-radius: var(--border-radius-lg) !important;
-            margin-bottom: var(--spacing-sm);
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition-normal);
-            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
         }
 
-        .list-group-item:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+        /* Edit Button */
+        .edit-btn {
+            background: #007bff;
+            color: #fff;
         }
 
-        /* Status Badges */
-        .status-badge {
-            display: inline-block;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--border-radius-sm);
-            font-size: var(--font-size-xs);
-            font-weight: var(--font-weight-semibold);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .edit-btn:hover {
+            background: #0056b3;
         }
 
-        .status-in-progress {
-            background: rgba(255, 193, 7, 0.2);
-            color: var(--warning-dark);
+        /* View Notes Button */
+        .view-notes-btn {
+            background: #28a745;
+            color: #fff;
         }
 
-        .status-accepted {
-            background: rgba(40, 167, 69, 0.2);
-            color: var(--success-dark);
+        .view-notes-btn:hover {
+            background: #218838;
         }
 
-        .status-rejected {
-            background: rgba(220, 53, 69, 0.2);
-            color: var(--danger-dark);
+        .disabled:hover {
+            cursor: not-allowed;
         }
 
-        .status-waitlisted {
-            background: rgba(108, 117, 125, 0.2);
-            color: var(--secondary-dark);
-        }
-
-        /* Student Details Card */
-        .student-details-card {
-            background: var(--white);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-2xl);
-            box-shadow: var(--shadow-md);
-            margin-bottom: var(--spacing-2xl);
-            border: 1px solid var(--light-gray);
-        }
-
-        .student-details-header {
-            text-align: center;
-            margin-bottom: var(--spacing-2xl);
-            padding-bottom: var(--spacing-lg);
-            border-bottom: 2px solid var(--light-gray);
-        }
-
-        .student-name {
-            color: var(--primary-color);
-            font-size: var(--font-size-4xl);
-            font-weight: var(--font-weight-bold);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .student-email {
-            color: var(--secondary-color);
-            font-size: var(--font-size-lg);
-            margin-bottom: var(--spacing-md);
-        }
-
-        .student-details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-xl);
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .detail-group {
-            background: var(--light-bg);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .detail-group-title {
-            color: var(--primary-color);
-            font-size: var(--font-size-lg);
-            font-weight: var(--font-weight-semibold);
-            margin-bottom: var(--spacing-md);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .detail-group-title i {
-            font-size: var(--font-size-xl);
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: var(--spacing-sm) 0;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            color: var(--secondary-color);
-            font-weight: var(--font-weight-medium);
-            font-size: var(--font-size-sm);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            min-width: 120px;
-        }
-
-        .detail-value {
-            color: var(--text-color);
-            font-weight: var(--font-weight-semibold);
-            font-size: var(--font-size-base);
-            text-align: right;
-            flex: 1;
-        }
-
-        .detail-value.highlight {
-            color: var(--primary-color);
-            font-weight: var(--font-weight-bold);
-        }
-
-        .detail-value span {
-            color: var(--text-color);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: var(--spacing-md);
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: var(--spacing-xl);
-            padding-top: var(--spacing-lg);
-            border-top: 2px solid var(--light-gray);
-        }
-
-        .btn-action {
-            padding: var(--spacing-sm) var(--spacing-xl);
-            border-radius: var(--border-radius-lg);
-            font-weight: var(--font-weight-semibold);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            transition: var(--transition-normal);
-            border: 2px solid transparent;
-        }
-
-        .btn-action:hover {
-            transform: translateY(-2px);
-            text-decoration: none;
-        }
-
-        .btn-primary-action {
-            background: var(--primary-gradient);
-            color: var(--white);
-        }
-
-        .btn-primary-action:hover {
-            color: var(--white);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-secondary-action {
-            background: var(--white);
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .btn-secondary-action:hover {
-            background: var(--primary-color);
-            color: var(--white);
-        }
-
-        .btn-info-action {
-            background: var(--info-gradient);
-            color: var(--white);
-        }
-
-        .btn-info-action:hover {
-            color: var(--white);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-email-action {
-            background: var(--success-gradient);
-            color: #000000;
-            border: 3px solid #28a745;
-            outline: 2px solid #155724;
-            outline-offset: 2px;
-            font-weight: var(--font-weight-bold);
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-email-action:hover {
-            color: #000000;
-            box-shadow: var(--shadow-lg);
-            border-color: #1e7e34;
-            outline-color: #0d4a1a;
-            transform: translateY(-2px);
-        }
-
-        /* Status Badge for Grade */
-        .grade-badge {
-            display: inline-block;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--border-radius-full);
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-semibold);
-            background: var(--success-gradient);
-            color: var(--white);
-        }
-
-        /* Package Type Badge */
-        .package-badge {
-            display: inline-block;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--border-radius-full);
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-semibold);
-            background: var(--warning-gradient);
-            color: var(--white);
-        }
-
-        /* Consultant Badge */
-        .consultant-badge {
-            display: inline-block;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--border-radius-full);
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-semibold);
-            background: var(--info-gradient);
-            color: var(--white);
-        }
-
-        /* Popup Styles */
         .popup-container {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            display: none;
             justify-content: center;
             align-items: center;
         }
-
-        .popup-container.show {
-            display: flex;
-        }
-
         .popup {
-            background: var(--white);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-2xl);
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-xl);
-            position: relative;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
         }
-
-        .close-btn {
-            position: absolute;
-            top: var(--spacing-md);
-            right: var(--spacing-md);
-            background: var(--danger-color);
-            color: var(--white);
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            font-size: var(--font-size-lg);
-            font-weight: var(--font-weight-bold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition-normal);
-        }
-
-        .close-btn:hover {
-            background: var(--danger-dark);
-            transform: scale(1.1);
-        }
-
         .popup h2 {
-            color: var(--primary-color);
-            font-size: var(--font-size-2xl);
-            font-weight: var(--font-weight-bold);
-            margin-bottom: var(--spacing-lg);
-            padding-right: var(--spacing-xl);
+            margin-top: 0;
+        }
+        .popup .close-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            float: right;
         }
 
-        .popup p {
-            color: var(--text-color);
-            font-size: var(--font-size-base);
-            line-height: 1.6;
-            margin: 0;
+        /* Task file upload styles */
+        .task-item:hover {
+            background-color: #f8f9fa;
         }
 
-        #package-details {
-            min-height: 100px;
-            padding: var(--spacing-md);
-            background: var(--light-bg);
-            border-radius: var(--border-radius-lg);
-            border: 1px solid var(--light-gray);
+        .file-drop-zone {
+            border: 2px dashed #007bff;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        #package-details p {
-            margin-bottom: var(--spacing-sm);
+        .file-drop-zone:hover {
+            border-color: #0056b3;
+            background-color: #e9ecef;
         }
 
-        #package-details p:last-child {
-            margin-bottom: 0;
+        .file-drop-zone.dragover {
+            border-color: #28a745;
+            background-color: #d4edda;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            #content {
-                width: 95%;
-                padding: var(--spacing-md);
-            }
-            
-            .nav-buttons {
-                flex-direction: column;
-            }
-            
-            .tab-button {
-                width: 100%;
-                text-align: center;
-            }
-            
-            .search-container {
-                flex-direction: column;
-            }
-            
-            .filter-container {
-                flex-direction: column;
-                gap: var(--spacing-sm);
-            }
+        .file-drop-content {
+            color: #6c757d;
+        }
 
-            .student-details-grid {
-                grid-template-columns: 1fr;
-                gap: var(--spacing-lg);
-            }
+        .file-drop-content i {
+            display: block;
+            margin-bottom: 10px;
+        }
 
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
+        .file-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
 
-            .btn-action {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 5px 0;
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
 
-            .detail-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: var(--spacing-xs);
-            }
+        .file-item .file-name {
+            flex: 1;
+            margin-right: 10px;
+            word-break: break-all;
+        }
 
-            .detail-value {
-                text-align: left;
-            }
+        .file-item .file-size {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+
+        .file-item .remove-file {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 2px 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .file-item .remove-file:hover {
+            background: #c82333;
+        }
+
+        .task-dropdown-icon {
+            font-size: 14px;
+        }
+
+        .task-dropdown-icon.rotated {
+            transform: translateY(-50%) rotate(180deg) !important;
         }
     </style>
   </head>
@@ -949,232 +505,104 @@
     <div class="popup">
         <button class="close-btn" onclick="closePopup()">X</button>
         <h2>Package Details</h2>
-        <div id="package-details">
-            <?php 
-            // Check multiple possible field names for package details
-            $packageDetails = '';
-            $possibleFields = ['packageDetails', 'package_details', 'packageInfo', 'package_info', 'details'];
-            
-            foreach ($possibleFields as $field) {
-                if (!empty($dataStudent[$field]) && trim($dataStudent[$field]) !== '') {
-                    $packageDetails = $dataStudent[$field];
-                    break;
-                }
-            }
-            
-            // If still no details, show package type and other available info
-            if (empty($packageDetails)) {
-                echo '<div style="padding: var(--spacing-lg);">';
-                echo '<h4 style="color: var(--primary-color); margin-bottom: var(--spacing-md);">Package Information</h4>';
-                
-                // Show package type
-                if (!empty($dataStudent['packageType'])) {
-                    echo '<div style="margin-bottom: var(--spacing-md);">';
-                    echo '<strong style="color: var(--secondary-color);">Package Type:</strong> ';
-                    echo '<span style="color: var(--text-color); font-weight: var(--font-weight-semibold);">' . htmlspecialchars($dataStudent['packageType']) . '</span>';
-                    echo '</div>';
-                }
-                
-                // Show consultant info
-                if (!empty($dataStudent['consultantName'])) {
-                    echo '<div style="margin-bottom: var(--spacing-md);">';
-                    echo '<strong style="color: var(--secondary-color);">Consultant:</strong> ';
-                    echo '<span style="color: var(--text-color); font-weight: var(--font-weight-semibold);">' . htmlspecialchars($dataStudent['consultantName']) . '</span>';
-                    echo '</div>';
-                }
-                
-                // Show grade info
-                if (!empty($dataStudent['signGrade'])) {
-                    echo '<div style="margin-bottom: var(--spacing-md);">';
-                    echo '<strong style="color: var(--secondary-color);">Sign Grade:</strong> ';
-                    echo '<span style="color: var(--text-color); font-weight: var(--font-weight-semibold);">' . htmlspecialchars($dataStudent['signGrade']) . '</span>';
-                    echo '</div>';
-                }
-                
-                // Show field of interest
-                if (!empty($dataStudent['interest'])) {
-                    echo '<div style="margin-bottom: var(--spacing-md);">';
-                    echo '<strong style="color: var(--secondary-color);">Field of Interest:</strong> ';
-                    echo '<span style="color: var(--text-color); font-weight: var(--font-weight-semibold);">' . htmlspecialchars($dataStudent['interest']) . '</span>';
-                    echo '</div>';
-                }
-                
-                echo '<div style="margin-top: var(--spacing-lg); padding: var(--spacing-md); background: var(--light-bg); border-radius: var(--border-radius-lg); border-left: 4px solid var(--primary-color);">';
-                echo '<p style="color: var(--secondary-color); font-style: italic; margin: 0; font-size: var(--font-size-sm);">';
-                echo '<i class="fas fa-info-circle" style="margin-right: var(--spacing-xs);"></i>';
-                echo 'Detailed package information will be displayed here when available.';
-                echo '</p>';
-                echo '</div>';
-                
-                echo '</div>';
-            } else {
-                echo '<p>' . htmlspecialchars($packageDetails) . '</p>';
-            }
-            ?>
-        </div>
+        <p id = "package-details"><?php echo $dataStudent['packageDetails']; ?></p>
     </div>
 </div>
 
-<div id="content">
-    <!-- Student Details Card -->
-    <div class="student-details-card">
-        <div class="student-details-header">
-            <h1 class="student-name"><?php echo htmlspecialchars($dataStudent['name']); ?></h1>
-            <p class="student-email"><?php echo htmlspecialchars($dataStudent['email']); ?></p>
-        </div>
+<div id = "content">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
-        <div class="student-details-grid">
-            <!-- Personal Information -->
-            <div class="detail-group">
-                <h3 class="detail-group-title">
-                    <i class="fas fa-user"></i>
-                    Personal Information
-                </h3>
-                <div class="detail-item">
-                    <span class="detail-label">Parent Email</span>
-                    <span class="detail-value"><?php echo htmlspecialchars($dataStudent['parentEmail']); ?></span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Location</span>
-                    <span class="detail-value"><?php echo htmlspecialchars($dataStudent['judet']); ?></span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Phone Number</span>
-                    <span class="detail-value"><?php echo htmlspecialchars($dataStudent['phoneNumber']); ?></span>
-                </div>
-            </div>
 
-            <!-- Academic Information -->
-            <div class="detail-group">
-                <h3 class="detail-group-title">
-                    <i class="fas fa-graduation-cap"></i>
-                    Academic Information
-                </h3>
-                <div class="detail-item">
-                    <span class="detail-label">High School</span>
-                    <span class="detail-value"><?php echo htmlspecialchars($dataStudent['highSchool']); ?></span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Field of Interest</span>
-                    <span class="detail-value"><?php echo htmlspecialchars($dataStudent['interest']); ?></span>
-                </div>
-                <?php
-                    $currentYear = date('Y');
-                    $currentMonth = date('n'); // 1-12
-                    $currentDay = date('j'); // 1-31
-                    
-                    // Check if student is bachelor (isMaster = 1)
-                    if (isset($dataStudent['isMaster']) && $dataStudent['isMaster'] == 1) {
-                        // Bachelor student - show contract end year
-                        $gradeDisplay = "Bachelor Student";
-                        $graduationDisplay = "Contract End Year: " . $dataStudent['graduationYear'];
-                    } else {
-                        // Non-bachelor student - calculate grade based on graduation year
-                        $graduationYear = $dataStudent['graduationYear'];
-                        
-                        // Calculate base grade (12 - years until graduation)
-                        $yearsUntilGraduation = $graduationYear - $currentYear;
-                        $baseGrade = 12 - $yearsUntilGraduation;
-                        
-                        // Adjust grade based on current date
-                        if ($currentMonth >= 6 && $currentMonth <= 9) {
-                            // June 1 - September 15: upcoming year
-                            if ($currentMonth == 6 || ($currentMonth == 9 && $currentDay <= 15)) {
-                                $calculatedGrade = $baseGrade + 1;
-                                $gradeDisplay = "Grade " . $calculatedGrade . " (upcoming year)";
-                            } else {
-                                $calculatedGrade = $baseGrade + 1;
-                                $gradeDisplay = "Grade " . $calculatedGrade;
-                            }
-                        } elseif ($currentMonth >= 10 || $currentMonth <= 12) {
-                            // September 16 - December 31: current year
-                            $calculatedGrade = $baseGrade + 1;
-                            $gradeDisplay = "Grade " . $calculatedGrade;
-                        } else {
-                            // January 1 - May 31: current year
-                            $calculatedGrade = $baseGrade;
-                            $gradeDisplay = "Grade " . $calculatedGrade;
-                        }
-                        $graduationDisplay = "Graduation Year: ";
-                    }
-                ?>
-                <div class="detail-item">
-                    <span class="detail-label">Current Grade</span>
-                    <span class="detail-value">
-                        <span class="grade-badge"><?php echo $gradeDisplay; ?></span>
-                    </span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label"><?php echo $graduationDisplay; ?></span>
-                    <span class="detail-value highlight"><?php echo $dataStudent['graduationYear']; ?></span>
-                </div>
-            </div>
+    <p class = "student-info"> <span class = "title-info"> Student Name: </span> <?php echo $dataStudent['name']; ?> </p>
+    <p class = "student-info"> <span class = "title-info"> Student's Email: </span> <?php echo $dataStudent['email']; ?> </p>
+    <p class = "student-info"> <span class = "title-info"> Parent's Email: </span> <?php echo $dataStudent['parentEmail']; ?> </p>
 
-            <!-- Service Information -->
-            <div class="detail-group">
-                <h3 class="detail-group-title">
-                    <i class="fas fa-cog"></i>
-                    Service Information
-                </h3>
-                <div class="detail-item">
-                    <span class="detail-label">Package Type</span>
-                    <span class="detail-value">
-                        <span class="package-badge"><?php echo htmlspecialchars($dataStudent['packageType']); ?></span>
-                    </span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Consultant</span>
-                    <span class="detail-value">
-                        <span class="consultant-badge"><?php echo htmlspecialchars($dataStudent['consultantName']); ?></span>
-                    </span>
-                </div>
-            </div>
-        </div>
+    <p class = "student-info"> <span class = "title-info"> Location: </span> <?php echo htmlspecialchars($dataStudent['judet']); ?> </p>
 
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="btn-action btn-primary-action" onclick="showPopup()">
-                <i class="fas fa-info-circle"></i>
-                View Package Details
-            </button>
+    <p class = "student-info"> <span class = "title-info"> HighSchool: </span> <?php echo $dataStudent['highSchool']; ?> </p>
+    <p class = "student-info"> <span class = "title-info"> Field of Interest: </span> <?php echo $dataStudent['interest']; ?> </p>
+    <p class = "student-info"> <span class = "title-info"> Phone number: </span> <?php echo $dataStudent['phoneNumber']; ?> </p>
+    <?php
+        $currentYear = date('Y');
+        $currentMonth = date('n'); // 1-12
+        $currentDay = date('j'); // 1-31
+        
+        // Check if student is bachelor (isMaster = 1)
+        if (isset($dataStudent['isMaster']) && $dataStudent['isMaster'] == 1) {
+            // Bachelor student - show contract end year
+            $gradeDisplay = "Bachelor Student";
+            $graduationDisplay = "Contract End Year: " . $dataStudent['graduationYear'];
+        } else {
+            // Non-bachelor student - calculate grade based on graduation year
+            $graduationYear = $dataStudent['graduationYear'];
             
-            <a href="<?php echo "editStudent.php?studentId=".$studentId; ?>" class="btn-action btn-secondary-action">
-                <i class="fas fa-edit"></i>
-                Edit Student Info
-            </a>
+            // Calculate base grade (12 - years until graduation)
+            $yearsUntilGraduation = $graduationYear - $currentYear;
+            $baseGrade = 12 - $yearsUntilGraduation;
             
-            <a href="<?php echo $dataStudent["driveLink"]; ?>" target="_blank" class="btn-action btn-info-action" style="background: #17a2b8 !important; color: white !important; border: 2px solid #138496 !important; box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;">
-                <i class="fas fa-external-link-alt"></i>
-                Drive Link Student
-            </a>
-            
-            <?php if (!empty($dataStudent['email']) && empty($dataStudent['studentPassword'])) { ?>
-            <form method="POST" style="display: inline;">
-                <input type="hidden" name="student_id" value="<?php echo $studentId; ?>">
-                <button type="submit" name="send_account_email" class="btn-action btn-email-action" onclick="return confirm('Send account creation email to <?php echo htmlspecialchars($dataStudent['email']); ?>?')">
-                    <i class="fas fa-envelope"></i>
-                    Send Account Email
-                </button>
-            </form>
-            <?php } ?>
-        </div>
-    </div>
+            // Adjust grade based on current date
+            if ($currentMonth >= 6 && $currentMonth <= 9) {
+                // June 1 - September 15: upcoming year
+                if ($currentMonth == 6 || ($currentMonth == 9 && $currentDay <= 15)) {
+                    $calculatedGrade = $baseGrade + 1;
+                    $gradeDisplay = "Grade " . $calculatedGrade . " (upcoming year)";
+                } else {
+                    $calculatedGrade = $baseGrade + 1;
+                    $gradeDisplay = "Grade " . $calculatedGrade;
+                }
+            } elseif ($currentMonth >= 10 || $currentMonth <= 12) {
+                // September 16 - December 31: current year
+                $calculatedGrade = $baseGrade + 1;
+                $gradeDisplay = "Grade " . $calculatedGrade;
+            } else {
+                // January 1 - May 31: current year
+                $calculatedGrade = $baseGrade;
+                $gradeDisplay = "Grade " . $calculatedGrade;
+            }
+            $graduationDisplay = "Graduation Year: " . $graduationYear;
+        }
+    ?>
+    <p class = "student-info"> <span class = "title-info"> Grade: </span> <?php echo $gradeDisplay; ?> </p>
+    <p class = "student-info"> <span class = "title-info"> <?php echo $graduationDisplay; ?> </span> </p>
+    <p class = "student-info"> <span class = "title-info"> Sign Grade: </span> <?php echo $dataStudent['signGrade']; ?> </p>
+    <p class = "student-info"> <span class = "title-info"> Package Type: </span> <?php echo $dataStudent['packageType']; ?> </p>
+    <p class = "student-info"> <span class = "title-info"> Consultant: </span> <?php echo $dataStudent['consultantName']; ?> </p>
 
-    <!-- Email Status Messages -->
-    <?php if (!empty($emailMessage)) { ?>
-    <div class="alert alert-success" style="margin: var(--spacing-lg) auto; max-width: 1200px; border-radius: var(--border-radius-lg); padding: var(--spacing-lg); background: var(--success-light); color: var(--success-dark); border: 1px solid var(--success-color);">
-        <i class="fas fa-check-circle" style="margin-right: var(--spacing-sm);"></i>
-        <?php echo $emailMessage; ?>
-    </div>
-    <?php } ?>
 
-    <?php if (!empty($emailError)) { ?>
-    <div class="alert alert-danger" style="margin: var(--spacing-lg) auto; max-width: 1200px; border-radius: var(--border-radius-lg); padding: var(--spacing-lg); background: var(--danger-light); color: var(--danger-dark); border: 1px solid var(--danger-color);">
-        <i class="fas fa-exclamation-triangle" style="margin-right: var(--spacing-sm);"></i>
-        <?php echo $emailError; ?>
-    </div>
-    <?php } ?>
+    <button class="btn btn-primary" onclick = "showPopup()">
+        View Package Details
+    </button>
+    <br>
+    <br>
+    <a href = <?php echo "editStudent.php?studentId=".$studentId; ?> > <button class = "btn btn-primary"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+</svg> Edit student info </button> </a>
 
+<br>
+<br>
+
+<a href="<?php echo $dataStudent["driveLink"]; ?>" target = "__blank"> 
+  <button class="btn btn-primary">
+    Drive Link Student
+  </button>
+</a>
+
+    
+    <br>
+    <br>
+    
+    <!-- <button onclick = "confirmRemove('removeStudent.php?studentId=<?php echo $studentId;?>')" class = "btn btn-danger"> <i class="fa-solid fa-minus"></i> Remove Student </button>
+    <button onclick = "confirmGraduate('graduateStudent.php?studentId=<?php echo $studentId;?>')" class = "btn btn-primary"> <i class="fa-solid fa-graduation-cap"></i> Graduate Student </button>
+    <button onclick = "confirmRestore('restoreStudent.php?studentId=<?php echo $studentId;?>')" class = "btn btn-primary"> <i class="fa-solid fa-refresh"></i> Restore Student </button> -->
+
+    <br>
+    <br>
+    
     <div class="nav-buttons">
             <button id="meetings-btn" class="tab-button" onclick="showSection('meetings-section', 'meetings-btn')">Meetings</button>
             <button id="university-applications-btn" class="tab-button active" onclick="showSection('university-applications-section', 'university-applications-btn')">University Applications</button>
@@ -2027,19 +1455,12 @@
 
 <script>
     function showPopup() {
-        document.getElementById('popup-container').classList.add('show');
+        document.getElementById('popup-container').style.display = 'flex';
     }
 
     function closePopup() {
-        document.getElementById('popup-container').classList.remove('show');
+        document.getElementById('popup-container').style.display = 'none';
     }
-
-    // Close popup when clicking outside
-    document.getElementById('popup-container').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closePopup();
-        }
-    });
 </script>
 
 <script>

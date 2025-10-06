@@ -34,158 +34,346 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <title>Boarding Schools list </title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
+    <title>Boarding Schools List</title>
 
     <style>
-        #contentStudents {
-            width: 70%;
-            /* float: right; */
-            margin: auto;
-        }
-        #contentFilter {
-            width: 10%;
-            float: left;
-            margin-left: 30px;
-            margin-top: 0px;
-        }
-        #search-bar-name {
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
-            background-repeat: no-repeat;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-        }
-        #search-bar-country {
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
-            background-repeat: no-repeat;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-        }
-        .university-name {
-            font-weight: bold;
-        }
-
-        .navbar {
-            height: 150px;
+        /* Boarding Schools List Design System Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
         #content {
-            display: inline;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+            min-height: calc(100vh - 120px);
         }
 
-        .checkbox-container {
+        .navbar {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .boarding-container {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            backdrop-filter: blur(10px);
+        }
+
+        .boarding-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .boarding-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
             display: flex;
             align-items: center;
-            margin-bottom: 5px; /* Adjust margin as needed */
-        }
-        .checkbox-container input[type="checkbox"] {
-            margin-right: 10px; /* Adjust margin as needed */
+            justify-content: center;
+            gap: var(--spacing-md);
         }
 
-        .checkboxLabel {
-            padding-top: 4.5px;
-            font-weight: normal;
-        }
-
-        h3 {
-            border-bottom: 4px solid black;
-            text-align: center;
-        }
-
-        h4 {
-            border-bottom: 3px solid #ccc;
-            text-align: center;
-        }
-
-        .filterPackage {
-            padding-bottom: 5px;
-        }
-
-        .filterConsultants {
-            padding-bottom: 5px;
-        }
-
-        .page-link {
-            padding: 5px;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        .pagination {
-            display: inline-block;
-        }
-
-        .pagination a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-            border: 1px solid #ddd;
-        }
-
-        .pagination a.active {
-            background-color: var(--pink);
-            color: white;
-            border: 1px solid var(--pink);
-        }
-
-        .pagination a:hover:not(.active) {background-color: #ddd;}
-
-        .pagination a:first-child {
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-        }
-
-        .pagination a:last-child {
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-        }
-
-        .pagination a.disabled {
-            pointer-events: none;
+        .boarding-title::before {
+            content: '\f1b3';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-2xl);
+            color: var(--primary-color);
         }
 
         .filter-buttons {
-            float: left;
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-2xl);
+            justify-content: center;
         }
 
-        .button1 {
-            background-color: <?php echo $button1Color; ?>;
-            border-color: <?php echo $button1Color; ?>;
-        }
-        .button1:hover{
-            background-color: <?php echo $button1HoverColor; ?>;
-            border-color: <?php echo $button1HoverColor; ?>;
-        }
-
-        .button2 {
-            background-color: <?php echo $button2Color; ?>;
-            border-color: <?php echo $button2Color; ?>;
-        }
-        .button2:hover{
-            background-color: <?php echo $button2HoverColor; ?>;
-            border-color: <?php echo $button2HoverColor; ?>;
-        }
-
-        .button3 {
-            background-color: <?php echo $button3Color; ?>;
-            border-color: <?php echo $button3Color; ?>;
-
-        }
-        .button3:hover{
-            background-color: <?php echo $button3HoverColor; ?>;
-            border-color: <?php echo $button3HoverColor; ?>;
-
+        .filter-btn {
+            flex: 1;
+            max-width: 300px;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            text-decoration: none;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        .filter-btn.inactive {
+            background: var(--white);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .filter-btn.inactive:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .search-container {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .search-bar {
+            flex: 1;
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-3xl);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
+            position: relative;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-lg);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: var(--font-size-lg);
+            pointer-events: none;
+        }
+
+        .search-count {
+            color: var(--primary-color);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            padding: var(--spacing-md);
+            background: var(--light-bg);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .boarding-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .boarding-item {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition-normal);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .boarding-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .boarding-info {
+            flex: 1;
+        }
+
+        .boarding-name {
+            color: var(--primary-color);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .boarding-name::before {
+            content: '\f1b3';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
+        }
+
+        .boarding-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .detail-label {
+            color: var(--secondary-color);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px;
+        }
+
+        .detail-value {
+            color: var(--text-color);
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-base);
+        }
+
+        .commission-badge {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .commission-yes {
+            background: var(--success-light);
+            color: var(--success-dark);
+            border: 1px solid var(--success-color);
+        }
+
+        .commission-no {
+            background: var(--danger-light);
+            color: var(--danger-dark);
+            border: 1px solid var(--danger-color);
+        }
+
+        .btn-view-applications {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+        }
+
+        .btn-view-applications:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-view-applications::after {
+            content: '\f061';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: var(--border-radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: var(--border-radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                padding: var(--spacing-md);
+            }
+
+            .boarding-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            .filter-btn {
+                max-width: none;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .boarding-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-lg);
+            }
+
+            .boarding-details {
+                width: 100%;
+            }
+        }
     </style>
     
   </head>
@@ -193,33 +381,44 @@
   
   <?php include("navbar.php"); ?>
 
-  <br>
-    <br>
-    <br>
-    <br>
-    <br>
-        
-  <div id = "content">
-    
-    <div id = "contentStudents">
-        <div class = "filter-buttons">
-            <a href = "<?php echo $base_url; ?>boardingList.php?university-filter=0" > <button class = "btn btn-primary button1"> All Programs </button> </a>
-            <a href = "<?php echo $base_url; ?>boardingList.php?university-filter=1" > <button class = "btn btn-primary button2" style = "background-color: "> Commissionable Programs </button> </a>
-            <a href = "<?php echo $base_url; ?>boardingList.php?university-filter=2" > <button class = "btn btn-primary button3" style = "background-color: "> Non-Comissionable Programs </button> </a>
+  <div id="content">
+    <div class="boarding-container">
+        <div class="boarding-header">
+            <h1 class="boarding-title">Boarding Schools List</h1>
         </div>
-        <br>
-        <br>
-        <h1 style = "float: left;"> Boarding Schools List</h1>
 
-        <br>
-        <br>
+        <div class="filter-buttons">
+            <a href="<?php echo $base_url; ?>boardingList.php?university-filter=0" class="filter-btn <?php echo (!isset($_GET["university-filter"]) || $_GET["university-filter"] == 0) ? 'active' : 'inactive'; ?>">
+                <i class="fas fa-graduation-cap"></i>
+                All Programs
+            </a>
+            <a href="<?php echo $base_url; ?>boardingList.php?university-filter=1" class="filter-btn <?php echo (isset($_GET["university-filter"]) && $_GET["university-filter"] == 1) ? 'active' : 'inactive'; ?>">
+                <i class="fas fa-check"></i>
+                Commissionable Programs
+            </a>
+            <a href="<?php echo $base_url; ?>boardingList.php?university-filter=2" class="filter-btn <?php echo (isset($_GET["university-filter"]) && $_GET["university-filter"] == 2) ? 'active' : 'inactive'; ?>">
+                <i class="fas fa-times"></i>
+                Non-Commissionable Programs
+            </a>
+        </div>
 
+        <div class="search-container">
+            <div style="position: relative; flex: 1;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-bar-name" class="search-bar" onkeyup="searchFunction()" placeholder="Search for boarding school name..." title="Type in a name">
+            </div>
+            <div style="position: relative; flex: 1;">
+                <i class="fas fa-globe search-icon"></i>
+                <input type="text" id="search-bar-country" class="search-bar" onkeyup="searchFunction()" placeholder="Search for country..." title="Type in a country">
+            </div>
+        </div>
 
-        <input type="text" id="search-bar-name" onkeyup="searchFunction()" placeholder="Search for university's name.." title="Type in a name">
-        <br>
-        <input type="text" id="search-bar-country" onkeyup="searchFunction()" placeholder="Search for university's country.." title="Type in a name">
+        <div class="search-count">
+            <i class="fas fa-graduation-cap"></i>
+            There are <strong><?php echo $noUniversities; ?></strong> boarding schools in your search
+        </div>
 
-        <ol id = "universities-list" class="list-group list-group-numbered">
+        <ul id="universities-list" class="boarding-list">
             <?php
 
             if (!isset($_GET["university-filter"]) || $_GET["university-filter"] == 0)
@@ -234,30 +433,47 @@
 
 
             $noUniversities = mysqli_num_rows($queryUniversities);
-            ?> <p style = "font-weight: bold;"> There are <span class = "search-count"> <?php echo $noUniversities; ?></span> summer programs in your search </p> <?php
+            
             while ($university = mysqli_fetch_assoc($queryUniversities)) {
+                $commission = $university['commission'];
+                $isCommissionable = $commission != 0;
+                $urlUniversity = "university.php?universityId=" . $university['universityId'];
               ?>
-                <div class = "university">
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                        <div class="university-name"><?php echo $university['universityName']; ?></div>
-                        <p class = "university-country"> <?php echo $university['universityCountry'];?> </p>
-                        <p class = "university-commission"> Commission: <?php echo $university['commission'];?> </p>
-
-
-                        
+                <li class="boarding-item">
+                    <div class="boarding-info">
+                        <div class="boarding-name"><?php echo htmlspecialchars($university['universityName']); ?></div>
+                        <div class="boarding-details">
+                            <div class="detail-row">
+                                <span class="detail-label">
+                                    <i class="fas fa-globe"></i>
+                                    Country:
+                                </span>
+                                <span class="detail-value"><?php echo htmlspecialchars($university['universityCountry']); ?></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">
+                                    <i class="fas fa-percentage"></i>
+                                    Commission:
+                                </span>
+                                <span class="detail-value">
+                                    <span class="commission-badge <?php echo $isCommissionable ? 'commission-yes' : 'commission-no'; ?>">
+                                        <?php echo $isCommissionable ? 'Yes (' . $commission . '%)' : 'No'; ?>
+                                    </span>
+                                </span>
+                            </div>
                         </div>
-                        <?php $urlUniversity = "university.php?universityId=" . $university['universityId']; ?>
-
-                        <a href = <?php echo $urlUniversity;?> > <button type="button" class="btn btn-primary">See applications</button> </a>
-                    </li>
-                </div>
+                    </div>
+                    <a href="<?php echo $urlUniversity; ?>" class="btn-view-applications">
+                        View Applications
+                    </a>
+                </li>
               <?php      
             }
             ?>
 
-        </ol>
+        </ul>
     </div>
+  </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -266,35 +482,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
         function searchFunction() {
-            var input, filter, ul, li, a, i, txtValue, countDisplay;
+            var inputName, inputCountry, filterName, filterCountry, list, boardingItems, countDisplay;
             inputName = document.getElementById("search-bar-name");
             inputCountry = document.getElementById("search-bar-country");
 
             filterName = inputName.value.toUpperCase();
             filterCountry = inputCountry.value.toUpperCase();
 
-
-
             list = document.getElementById("universities-list");
-            universities = list.getElementsByClassName("university");
+            boardingItems = list.getElementsByClassName("boarding-item");
             countDisplay = 0;
 
-            for (i = 0; i < universities.length; i++) {
-                name = universities[i].getElementsByClassName("university-name")[0].innerHTML;
-                country = universities[i].getElementsByClassName("university-country")[0].innerHTML;
-
+            for (var i = 0; i < boardingItems.length; i++) {
+                var nameElement = boardingItems[i].getElementsByClassName("boarding-name")[0];
+                var countryElement = boardingItems[i].getElementsByClassName("detail-value")[0];
+                
+                var name = nameElement ? nameElement.textContent || nameElement.innerText : "";
+                var country = countryElement ? countryElement.textContent || countryElement.innerText : "";
                 
                 if (name.toUpperCase().indexOf(filterName) > -1 && country.toUpperCase().indexOf(filterCountry) > -1) {
-                    universities[i].style.display = "";
+                    boardingItems[i].style.display = "";
                     countDisplay++;
                 } else {
-                    universities[i].style.display = "none";
+                    boardingItems[i].style.display = "none";
                 }
             }
 
-            document.getElementsByClassName("search-count")[0].innerHTML = countDisplay;
+            var searchCountElement = document.querySelector(".search-count strong");
+            if (searchCountElement) {
+                searchCountElement.textContent = countDisplay;
+            }
         }
-        
     </script>
 </body>
 </html>
