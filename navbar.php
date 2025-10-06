@@ -129,6 +129,12 @@
               <a href = "researchPage.php" class = "nav-menu-link"> Research </a>
             </li>
 
+            <?php if (isset($_SESSION["type"]) && $_SESSION["type"] == 2) { ?>
+            <li class="list-item-2">
+              <a href = "consultant-calendar.php" class = "nav-menu-link"> <i class="fa fa-calendar" aria-hidden="true"></i> Calendar </a>
+            </li>
+            <?php } ?>
+
             <li style = "padding-right: 20px;"class="list-item-2">
                 <div data-hover="false" data-delay="0" class="nav-menu-link dropdown w-dropdown">
                   <div class="dropdown-toggle w-dropdown-toggle">
@@ -140,7 +146,9 @@
                   <nav class="dropdown-list w-dropdown-list">
                     <a href="resetPassword.php" class="dropdown-link w-dropdown-link">Change password</a>
                     <a href="changeCalendly.php" class="dropdown-link w-dropdown-link">Update Calendly</a>
-
+                    <?php if (isset($_SESSION["type"]) && $_SESSION["type"] == 2) { ?>
+                    <a href="consultant-calendar.php" class="dropdown-link w-dropdown-link">My Calendar</a>
+                    <?php } ?>
                     <a href="signOut.php" class="dropdown-link w-dropdown-link"> <i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a>
                   </nav>
                 </div>

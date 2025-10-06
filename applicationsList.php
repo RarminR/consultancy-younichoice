@@ -184,201 +184,400 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <title>Applications List </title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
+    <title>Applications List</title>
 
     <style>
-        :root {
-            --primary-color: #4f235f;
-            --secondary-color: #6c757d;
-            --accent-color: #007bff;
-            --background-color: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
+        /* Applications List Design System Styles */
         body {
-            background-color: #f5f7fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
-        #contentStudents {
-            width: 75%;
-            margin: auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
+        #content {
+            display: flex;
+            gap: var(--spacing-xl);
+            padding: var(--spacing-xl);
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 120px);
         }
 
         #contentFilter {
-            width: 20%;
-            float: left;
-            margin: 20px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
+            width: 320px;
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            height: fit-content;
+            position: sticky;
+            top: var(--spacing-xl);
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        #contentStudents {
+            flex: 1;
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            backdrop-filter: blur(10px);
         }
 
         .navbar {
-            height: 80px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
         }
 
         h1 {
             color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        h1::before {
+            content: '\f0f6';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-2xl);
+            color: var(--primary-color);
+        }
+
+        .search-container {
+            margin-bottom: var(--spacing-xl);
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) 3rem;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-bar::placeholder {
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-lg);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: var(--font-size-lg);
         }
 
         h3 {
             color: var(--primary-color);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-md);
             border-bottom: 3px solid var(--primary-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        h3::before {
+            content: '\f0b0';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-lg);
         }
 
         h4 {
             color: var(--secondary-color);
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-            font-weight: 500;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .filterConsultants h4::before {
+            content: '\f007';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        .filterCountry h4::before {
+            content: '\f57c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        .filterInstitutionType h4::before {
+            content: '\f19c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        .filterComission h4::before {
+            content: '\f3d1';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        .filterStatus h4::before {
+            content: '\f0f3';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        .filter-section {
+            background: var(--light-bg);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition-normal);
+        }
+
+        .filter-section:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
 
         .status-group {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
+            background: var(--light-bg);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition-normal);
         }
 
         .status-group:hover {
-            box-shadow: var(--hover-shadow);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
 
         .status-group-title {
             color: var(--primary-color);
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e9ecef;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .checkbox-container {
-            margin: 10px 0;
-            transition: all 0.2s ease;
-            padding: 8px;
-            border-radius: 6px;
+        /* Custom scrollbar for filter panel */
+        #contentFilter::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .checkbox-container:hover {
-            transform: translateX(5px);
-            background-color: #f8f9fa;
+        #contentFilter::-webkit-scrollbar-track {
+            background: var(--light-bg);
+            border-radius: var(--border-radius-sm);
         }
 
-        .checkbox-container input[type="checkbox"] {
-            margin-right: 12px;
+        #contentFilter::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: var(--border-radius-sm);
+        }
+
+        #contentFilter::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin: var(--spacing-xs) 0;
+            border-radius: var(--border-radius-md);
+            transition: var(--transition-normal);
             cursor: pointer;
+        }
+
+        .filter-row:hover {
+            background: var(--light-bg);
+            transform: translateX(var(--spacing-sm));
+        }
+
+        .filter-row input[type="checkbox"] {
+            margin-right: var(--spacing-md);
             width: 18px;
             height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
         }
 
-        .checkboxLabel {
+        .filter-row label {
+            margin: 0;
             cursor: pointer;
             user-select: none;
-            color: var(--secondary-color);
-            font-size: 0.95rem;
+            color: var(--text-color);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            flex-grow: 1;
         }
 
         .list-group-item {
-            margin-bottom: 10px;
-            border-radius: 8px !important;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-            padding: 20px;
+            margin-bottom: var(--spacing-md);
+            border-radius: var(--border-radius-lg) !important;
+            border: 1px solid var(--light-gray) !important;
+            transition: var(--transition-normal);
+            padding: var(--spacing-xl);
+            background: var(--white);
         }
 
         .list-group-item:hover {
-            box-shadow: var(--hover-shadow);
-            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--primary-color) !important;
         }
 
         .badge {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            border-radius: var(--border-radius-full);
+            box-shadow: var(--shadow-sm);
             white-space: nowrap;
-            color: white !important;
+            color: var(--white) !important;
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .btn-primary {
-            background-color: var(--accent-color);
+            background: var(--primary-gradient);
             border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--white);
+            transition: var(--transition-normal);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-primary::after {
+            content: '\f061';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-xs);
         }
 
         input[type="button"], input[type="submit"] {
-            background-color: var(--accent-color);
-            color: white;
+            background: var(--primary-gradient);
+            color: var(--white);
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            margin: 5px;
+            transition: var(--transition-normal);
+            font-weight: var(--font-weight-semibold);
+            margin: var(--spacing-xs);
+            font-family: 'Poppins', sans-serif;
         }
 
         input[type="button"]:hover, input[type="submit"]:hover {
-            background-color: #0056b3;
             transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
+            box-shadow: var(--shadow-lg);
+        }
+
+        input[type="button"] {
+            background: var(--secondary-gradient);
         }
 
         .full-name {
-            font-weight: 600;
+            font-weight: var(--font-weight-semibold);
             color: var(--primary-color);
-            font-size: 1.1rem;
-            margin-bottom: 12px;
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.4;
         }
 
         .consultant {
-            color: var(--secondary-color);
-            font-size: 0.95rem;
+            color: var(--text-color);
+            font-size: var(--font-size-sm);
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            flex-wrap: wrap;
         }
 
         .consultant-label {
-            font-weight: 600;
+            font-weight: var(--font-weight-semibold);
             min-width: 90px;
+            color: var(--secondary-color);
+        }
+
+        .scholarship-info {
+            color: var(--success-color);
+            font-size: var(--font-size-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+
+        .scholarship-info .consultant-label {
+            color: var(--success-color);
         }
 
         .search-count {
             color: var(--primary-color);
-            font-weight: 600;
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-lg);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-xl);
+        }
+
+        .filter-buttons input[type="button"],
+        .filter-buttons input[type="submit"] {
+            flex: 1;
+            text-align: center;
         }
 
         /* Custom scrollbar */
@@ -387,76 +586,44 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: var(--light-bg);
         }
 
         ::-webkit-scrollbar-thumb {
             background: var(--secondary-color);
-            border-radius: 4px;
+            border-radius: var(--border-radius-sm);
         }
 
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-color);
         }
 
-        .filter-section {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid #e9ecef;
-        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                flex-direction: column;
+                padding: var(--spacing-md);
+            }
 
-        .filter-section h4 {
-            color: var(--primary-color);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e9ecef;
-        }
+            #contentFilter {
+                width: 100%;
+                position: static;
+                margin-bottom: var(--spacing-lg);
+            }
 
-        .filter-row {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            margin: 5px 0;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
+            h1 {
+                font-size: var(--font-size-2xl);
+            }
 
-        .filter-row:hover {
-            background-color: #f8f9fa;
-            transform: translateX(5px);
-        }
+            .list-group-item {
+                padding: var(--spacing-lg);
+            }
 
-        .filter-row input[type="checkbox"] {
-            margin-right: 12px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .filter-row label {
-            margin: 0;
-            cursor: pointer;
-            user-select: none;
-            color: var(--secondary-color);
-            font-size: 0.95rem;
-            flex-grow: 1;
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .filter-buttons input[type="button"],
-        .filter-buttons input[type="submit"] {
-            flex: 1;
-            text-align: center;
+            .consultant {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-xs);
+            }
         }
     </style>
     
@@ -471,16 +638,15 @@
     <br>
     <br>
         
-  <div id = "content">
-    <div id = "contentFilter" >
+  <div id="content">
+    <div id="contentFilter">
         <h3>Filters</h3>
-        <br>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET" id = "filters-form"> 
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET" id="filters-form"> 
         <?php
         if ($typeAccount == 1) { 
         ?>
-        <div class = "filterConsultants">
-            <h4> Consultants </h4>
+        <div class="filter-section filterConsultants">
+            <h4>Consultants</h4>
             <?php 
                 $sql = "SELECT userId, fullName FROM users WHERE type = 0"; // iau consultantii
                 $result = mysqli_query($link, $sql);
@@ -499,13 +665,12 @@
                     <?php
                 }
             ?>
-
         </div>
         <?php
         }
         ?>
 
-        <div class="filterCountry">
+        <div class="filter-section filterCountry">
             <h4>Country</h4>
             <?php
                 $countries = ["USA", "The Netherlands", "UK", "Italy", "Spain", "Germany", "Ireland", "Switzerland", "France", "Belgium", "Other"];
@@ -525,8 +690,8 @@
             ?>
         </div>
 
-        <div class = "filterInstitutionType">
-            <h4> Institution Type </h4>
+        <div class="filter-section filterInstitutionType">
+            <h4>Institution Type</h4>
             <div class="filter-row">
                 <input type="checkbox" id="checkboxUniversity" value="0" name="institution[]" onchange="submitForm()" <?php echo ($freqInstitution['0'] == 1) ? 'checked' : ''; ?>>
                 <label for="checkboxUniversity">University</label>
@@ -543,8 +708,8 @@
             </div>
         </div>
 
-        <div class = "filterComission">
-            <h4> Commission </h4>
+        <div class="filter-section filterComission">
+            <h4>Commission</h4>
             <div class="filter-row">
                 <input type="checkbox" id="checkboxComissionable" value="1" name="commission[]" onchange="submitForm()" <?php echo ($freqCommission[1] == 1) ? 'checked' : ''; ?>>
                 <label for="checkboxComissionable">Commissionable</label>
@@ -556,8 +721,8 @@
             </div>
         </div>
 
-        <div class = "filterStatus">
-            <h4> Status </h4>
+        <div class="filter-section filterStatus">
+            <h4>Status</h4>
             
             <div class="status-group">
                 <h5 class="status-group-title">Active Applications</h5>
@@ -608,16 +773,15 @@
         </div>
         </form>
     </div>  
-    <div id = "contentStudents">
-        <h1 style = "float: left;"> Applications List</h1>
-        <br>
-        <br>
-        <br>
-        <br>
+    <div id="contentStudents">
+        <h1>Applications List</h1>
+        
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="search-bar" class="search-bar" onkeyup="searchFunction()" placeholder="Search for applications..." title="Type in a name">
+        </div>
 
-
-        <!-- <input type="text" id="search-bar" onkeyup="searchFunction()" placeholder="Search for students.." title="Type in a name"> -->
-        <ol id = "students-list" class="list-group list-group-numbered">
+        <ol id="students-list" class="list-group list-group-numbered">
             <?php
             if ($typeAccount == 1) {
                 $sqlApplication = "SELECT 
@@ -677,16 +841,22 @@
             if (!isset($noApplications))
                 $noApplications = 0;
 
-            ?> <p style = "font-weight: bold;"> There are <span class = "search-count"><?php echo $noApplications; ?></span> applications in your search </p> <?php
+            ?> 
+            <p style="font-weight: bold; margin-bottom: var(--spacing-xl);"> 
+                There are <span class="search-count"><?php echo $noApplications; ?></span> applications in your search 
+            </p> 
+            <?php
             while ($row = mysqli_fetch_assoc($queryApplication)) {
               ?>
-                <div class = "student">
+                <div class="student">
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div class="full-name">Application from <?php echo $row['studentName'] . " to <br>" . $row['universityName'] . "(" . $row['universityCountry'] . ")"; ?></div>
+                            <div class="full-name">
+                                Application from <?php echo $row['studentName'] . " to " . $row['universityName'] . " (" . $row['universityCountry'] . ")"; ?>
+                            </div>
                             <div class="consultant">
                                 <span class="consultant-label">Consultant:</span>
-                                <span><?php echo $row['consultantName'];?></span>
+                                <span><?php echo $row['consultantName']; ?></span>
                                 <span class="badge" style="background-color: <?php echo getStatusColor($row['appStatus']); ?> !important; color: white !important;">
                                     <?php echo $row['appStatus']; ?>
                                 </span>
@@ -698,9 +868,9 @@
                                 </div>
                             <?php } ?>
                         </div>
-                        <?php $urlApplication = "application.php?applicationId=" . $row['applicationId'];?>
-                        <a href="<?php echo $urlApplication;?>">
-                            <button type="button" class="btn btn-primary">View details</button>
+                        <?php $urlApplication = "application.php?applicationId=" . $row['applicationId']; ?>
+                        <a href="<?php echo $urlApplication; ?>">
+                            <button type="button" class="btn btn-primary">View Details</button>
                         </a>
                     </li>
                 </div>
@@ -726,10 +896,9 @@
             countDisplay = 0;
             for (i = 0; i < students.length; i++) {
                 name1 = students[i].getElementsByClassName("full-name")[0].innerHTML;
-                name2 = students[i].getElementsByClassName("highSchool")[0].innerHTML;
                 name3 = students[i].getElementsByClassName("consultant")[0].innerHTML;
 
-                name = name1 + name2 + name3;
+                name = name1 + name3;
                 if (name.toUpperCase().indexOf(filter) > -1) {
                     students[i].style.display = "";
                     countDisplay++;

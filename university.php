@@ -96,140 +96,522 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <title>School <?php echo $dataUniversity["universityName"]; ?></title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
+    <title>University: <?php echo htmlspecialchars($dataUniversity["universityName"]); ?></title>
 
     <style>
+        /* University Page Design System Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
         #content {
-            width: 70%;
-            margin: auto;
-        }
-        #search-bar {
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
-            background-repeat: no-repeat;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-        }
-        .full-name {
-            font-weight: bold;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+            min-height: calc(100vh - 120px);
         }
 
         .navbar {
-            height: 150px;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
         }
 
-        .badge {
-            /* height: 30px; */
-            font-size: 15px;
-            color: white;
-            background-color: var(--pink) !important;
+        .university-header {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            margin-bottom: var(--spacing-2xl);
+            backdrop-filter: blur(10px);
+        }
+
+        .university-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .university-title::before {
+            content: '\f19c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
+        }
+
+        .university-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .info-item {
+            background: var(--light-bg);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            border-left: 3px solid var(--primary-color);
+            transition: var(--transition-normal);
+        }
+
+        .info-item:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-label {
+            color: var(--secondary-color);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .info-label::before {
+            content: '\f19c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
+        }
+
+        .type-label::before {
+            content: '\f0ae';
+        }
+
+        .name-label::before {
+            content: '\f19c';
+        }
+
+        .country-label::before {
+            content: '\f57c';
+        }
+
+        .commission-label::before {
+            content: '\f3d1';
+        }
+
+        .info-value {
+            color: var(--text-color);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .commission-badge {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .commission-yes {
+            background: var(--success-gradient);
+        }
+
+        .commission-no {
+            background: var(--danger-gradient);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: var(--spacing-xs) var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+        }
+
+        .btn-primary-action {
+            background: var(--primary-gradient);
+            color: var(--white);
+        }
+
+        .btn-primary-action:hover {
+            color: var(--white);
+        }
+
+        .btn-primary-action::before {
+            content: '\f044';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
+        }
+
+        .btn-add-action {
+            background: var(--success-gradient);
+            color: var(--white);
+        }
+
+        .btn-add-action:hover {
+            color: var(--white);
+        }
+
+        .btn-add-action::before {
+            content: '\f067';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
+        }
+
+        .search-container {
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-3xl);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-icon {
             position: absolute;
-            right: 50%;
-        }
-        
-        .fw-bold {
-            font-weight: bold;
-        }
-
-        .student-info {
-            font-size: 18px;
-            font-weight: bold;
+            left: var(--spacing-lg);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: var(--font-size-lg);
+            pointer-events: none;
         }
 
-        .title-info {
-            font-weight: bold;
-            color: var(--pink);
-            font-size: 20px;
+        .applications-section {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            backdrop-filter: blur(10px);
         }
 
-        .info-row {
-            display: inline; /* the default for span */
+        .applications-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
-        .statusSelect {
-            width: 100px;
-            height: 25px;
+        .applications-title::before {
+            content: '\f0f6';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
         }
 
+        .applications-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .application-item {
+            background: var(--white);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition-normal);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .application-item:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .application-info {
+            flex: 1;
+        }
+
+        .student-name {
+            color: var(--primary-color);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .student-name::before {
+            content: '\f007';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-base);
+            color: var(--primary-color);
+        }
+
+        .consultant-name {
+            color: var(--secondary-color);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .consultant-name::before {
+            content: '\f007';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-xs);
+            color: var(--secondary-color);
+        }
+
+        .status-badge {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: var(--spacing-md);
+        }
+
+        .status-in-progress {
+            background: var(--warning-gradient);
+        }
+
+        .status-accepted {
+            background: var(--success-gradient);
+        }
+
+        .status-rejected {
+            background: var(--danger-gradient);
+        }
+
+        .status-waitlisted {
+            background: var(--secondary-gradient);
+        }
+
+        .btn-view-details {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+        }
+
+        .btn-view-details:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-view-details::after {
+            content: '\f061';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: var(--border-radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: var(--border-radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                padding: var(--spacing-md);
+            }
+
+            .university-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .university-info-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            .application-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-lg);
+            }
+
+            .application-info {
+                width: 100%;
+            }
+        }
     </style>
   </head>
 
   
   <?php include("navbar.php"); ?>
 
-  <div id = "content">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+  <div id="content">
+    <div class="university-header">
+      <h1 class="university-title"><?php echo htmlspecialchars($dataUniversity['universityName']); ?></h1>
+      
+      <div class="university-info-grid">
+        <div class="info-item">
+          <div class="info-label type-label">School Type</div>
+          <div class="info-value"><?php echo htmlspecialchars($schoolType); ?></div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label name-label">School Name</div>
+          <div class="info-value"><?php echo htmlspecialchars($dataUniversity['universityName']); ?></div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label country-label">School Country</div>
+          <div class="info-value"><?php echo htmlspecialchars($dataUniversity['universityCountry']); ?></div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label commission-label">School Commission</div>
+          <div class="info-value">
+            <span class="commission-badge <?php echo $dataUniversity['commission'] != 0 ? 'commission-yes' : 'commission-no'; ?>">
+              <?php echo $dataUniversity['commission'] != 0 ? 'Yes' : 'No'; ?>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- <p> <?php echo $arrAplicationsStatusColor[0]; ?> </p> -->
+    <div class="action-buttons">
+      <?php if ($typeAccount == 1) { ?>
+        <a href="editUniversity.php?universityId=<?php echo $universityId; ?>" class="btn-action btn-primary-action">
+          Edit University Info
+        </a>
+      <?php } ?>
+      
+      <a href="addApplicationUniversity.php?universityId=<?php echo $universityId; ?>" class="btn-action btn-add-action">
+        Add Application
+      </a>
+    </div>
 
-    <p class = "student-info"> <span class = "title-info"> School Type: </span> <?php echo $schoolType;  ?> </p>
-    <p class = "student-info"> <span class = "title-info"> School Name: </span> <?php echo $dataUniversity['universityName']; ?> </p>
-    <p class = "student-info"> <span class = "title-info"> School Country: </span> <?php echo $dataUniversity['universityCountry']; ?> </p>
-    <p class = "student-info"> <span class = "title-info"> School Commission: </span> <?php echo $dataUniversity['commission']; ?> </p>
-
-
-
-    <br>
-    
-    <?php
-    if ($typeAccount == 1) { ?>
-        <a href = <?php echo "editUniversity.php?universityId=".$universityId; ?> > <button class = "btn btn-primary"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-        </svg> Edit info </button> </a>
-        <!-- <a onclick="confirmRemove('removeUniversity.php?universityId=<?php echo $universityId; ?>')"> <button class = "btn btn-danger"> <i class="fa-solid fa-minus"></i> Remove </button> </a> -->
-        <br>
-        <br>
-    <?php
-    } ?>
-
-    
-
-    
-
-    <a href = "addApplicationUniversity.php?universityId=<?php echo $universityId; ?>"> <button class = "btn btn-primary"> <i class="fa-solid fa-plus"></i> Add application </button> </a>
-
-    <br>
-    <br>
-
-
-    <input type="text" id="search-bar" onkeyup="searchFunction()" placeholder="Search for student names.." title="Type in a name">
-    <!-- <p class="text-danger">Even if you press the single update button it will update every change made to all of the applications. If you want to return to the initial configuration, just refresh the page. </p>             -->
-    <form method = "post">
-        <ol class="list-group list-group-numbered" id = "applications-list">
-
-            <?php
-            for ($i = 0; $i < $nApplications; $i++) { ?>
-                <div class = "application">
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                        <div class="fw-bold university-name"><?php echo $arrStudentName[$i]; ?></div>
-                        <p class = "country-university"> <?php echo $arrStudentConsultant[$i]; ?> </p>
-                        </div>
-                        <span class="badge bg-primary rounded-pill" style = "background-color: <?php echo $arrAplicationsStatusColor[$i]; ?> !important;"> <?php echo $arrAplicationsStatus[$i]; ?></span>
-                        <div>
-                            <a href = "application.php?applicationId=<?php echo $arrApplicationsId[$i]; ?>"> <button type="button" class="btn btn-primary">View details</button> </a>
-                        </div>
-                    </li>
-                </div>
-            <?php
-            }
-            ?>
-        </ol>
-
-        <br>
-        <!-- <div style = "text-align: center;">
-            <input style = "width: 50%;" class="btn btn-primary" type="submit" value="Update all">
-        </div> -->
-    </form>
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="search-bar" class="search-bar" onkeyup="searchFunction()" placeholder="Search for student names..." title="Type in a name">
+    </div>
+    <div class="applications-section">
+      <h2 class="applications-title">Applications</h2>
+      
+      <ul class="applications-list" id="applications-list">
+        <?php
+        for ($i = 0; $i < $nApplications; $i++) { 
+          // Determine status class based on status
+          $statusClass = 'status-in-progress';
+          if ($arrAplicationsStatus[$i] == 'Accepted') {
+            $statusClass = 'status-accepted';
+          } elseif ($arrAplicationsStatus[$i] == 'Rejected') {
+            $statusClass = 'status-rejected';
+          } elseif ($arrAplicationsStatus[$i] == 'Waitlisted') {
+            $statusClass = 'status-waitlisted';
+          }
+        ?>
+          <li class="application-item">
+            <div class="application-info">
+              <div class="student-name"><?php echo htmlspecialchars($arrStudentName[$i]); ?></div>
+              <div class="consultant-name"><?php echo htmlspecialchars($arrStudentConsultant[$i]); ?></div>
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+              <span class="status-badge <?php echo $statusClass; ?>">
+                <?php echo htmlspecialchars($arrAplicationsStatus[$i]); ?>
+              </span>
+              <a href="application.php?applicationId=<?php echo $arrApplicationsId[$i]; ?>" class="btn-view-details">
+                View Details
+              </a>
+            </div>
+          </li>
+        <?php } ?>
+      </ul>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -238,19 +620,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
         function searchFunction() {
-            var input, filter, ul, li, a, i, txtValue;
+            var input, filter, list, applications, i, name;
             input = document.getElementById("search-bar");
             filter = input.value.toUpperCase();
             list = document.getElementById("applications-list");
-            applications = list.getElementsByClassName("application");
+            applications = list.getElementsByClassName("application-item");
+            
             for (i = 0; i < applications.length; i++) {
-                name1 = applications[i].getElementsByClassName("university-name")[0].innerHTML;
-                name2 =  applications[i].getElementsByClassName("country-university")[0].innerHTML;
-
-                name = name1;
-                console.log(name);
+                name = applications[i].getElementsByClassName("student-name")[0].innerHTML;
+                
                 if (name.toUpperCase().indexOf(filter) > -1) {
-                    applications[i].style.display = "";
+                    applications[i].style.display = "flex";
                 } else {
                     applications[i].style.display = "none";
                 }

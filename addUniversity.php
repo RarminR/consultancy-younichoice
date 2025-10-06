@@ -61,127 +61,267 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
     <script src="https://unpkg.com/react-phone-number-input@3.x/bundle/react-phone-number-input.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/react-phone-number-input@3.x/bundle/style.css"/>
-
-
-    <title> Add University</title>
+    <title>Add University - Youni</title>
 
     <style>
+        /* Add University Page Design System Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
         #content {
-            width: 70%;
-            margin: auto;
-        }
-        #search-bar {
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
-            background-repeat: no-repeat;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-        }
-        .full-name {
-            font-weight: bold;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+            min-height: calc(100vh - 120px);
         }
 
         .navbar {
-            height: 150px;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
         }
 
-        .badge {
-            /* height: 30px; */
-            font-size: 15px;
-            color: white;
-            background-color: var(--pink) !important;
-            position: fixed;
-            right: 50%;
-        }
-        
-        .fw-bold {
-            font-weight: bold;
+        .add-university-container {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            backdrop-filter: blur(10px);
         }
 
-        .student-info {
-            font-size: 18px;
-            font-weight: bold;
+        .add-university-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--light-gray);
         }
 
-        .title-info {
-            font-weight: bold;
-            color: var(--pink);
-            font-size: 20px;
+        .add-university-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
         }
 
-        .info-row {
-            display: inline; /* the default for span */
+        .add-university-title::before {
+            content: '\f19c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-2xl);
+            color: var(--primary-color);
         }
 
-        .statusSelect {
-            width: 100px;
-            height: 25px;
+        .form-section {
+            background: var(--light-bg);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-gray);
         }
 
-        input[name = "name"] {
-            width: 30%;
+        .form-group {
+            margin-bottom: var(--spacing-xl);
         }
 
-        input[name = "country"] {
-            width: 30%;
+        .form-label {
+            color: var(--primary-color);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
-        input[name = "commission"] {
-            width: 30%;
+        .form-label::before {
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-base);
+            color: var(--primary-color);
         }
 
-        input, select {
-            border-radius: 10px; /* Adjust the value to control the roundness */
-            padding: 8px 12px; /* Adjust padding as needed */
-            border: 1px solid #ccc; /* Add a border for visual distinction */
+        .name-label::before { content: '\f19c'; }
+        .country-label::before { content: '\f0ac'; }
+        .commission-label::before { content: '\f3d1'; }
+
+        .form-control {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
         }
 
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-submit {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-lg);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-submit::before {
+            content: '\f067';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-base);
+        }
+
+        .alert {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: var(--spacing-lg);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .alert-danger {
+            background: var(--danger-light);
+            color: var(--danger-dark);
+            border: 1px solid var(--danger-color);
+        }
+
+        .alert-info {
+            background: var(--info-light);
+            color: var(--info-dark);
+            border: 1px solid var(--info-color);
+        }
+
+        .alert a {
+            color: var(--primary-color);
+            font-weight: var(--font-weight-semibold);
+            text-decoration: none;
+        }
+
+        .alert a:hover {
+            text-decoration: underline;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: var(--border-radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: var(--border-radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                padding: var(--spacing-md);
+            }
+
+            .add-university-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .form-section {
+                padding: var(--spacing-lg);
+            }
+
+            .btn-submit {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
   </head>
 
   
   <?php include("navbar.php"); ?>
 
-  <div id = "content">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+  <div id="content">
+    <div class="add-university-container">
+        <div class="add-university-header">
+            <h1 class="add-university-title">Add University</h1>
+        </div>
 
-    <h1 style = "color: rgba(79, 35, 95, .9);"> Add University </h1>
-    <br>
-    <br>
-    <form method = "post" onsubmit = "return validateForm()">
-        <p class = "student-info"> <span class = "title-info"> Univeristy Name: </span> <input type = "text" value = "<?php echo $name; ?>" name = "name" placeholder = "University name" required /> </p>
-        <?php
-            if (isset($errorName)) {
-            ?> <span style = "color: red;"> <?php echo $errorName; ?> You can edit it at this link: <a href = "<?php echo $universityLink; ?>"> University Details </a> </span>
-               <br>
-            <?php
-            }
-        ?>
+        <form method="post" onsubmit="return validateForm()">
+            <div class="form-section">
+                <div class="form-group">
+                    <label class="form-label name-label">University Name</label>
+                    <input type="text" name="name" class="form-control" value="<?php echo htmlspecialchars($name); ?>" placeholder="Enter university name" required>
+                    <?php if (isset($errorName)) { ?>
+                        <div class="alert alert-danger">
+                            <?php echo $errorName; ?> You can edit it at this link: 
+                            <a href="<?php echo $universityLink; ?>">University Details</a>
+                        </div>
+                    <?php } ?>
+                </div>
 
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Univeristy Country: </span> <input type = "text" name = "country" placeholder = "University country" required /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> University Commission:  </span> <input type = "number" name = "commission" placeholder = "University commission(not required)" /> </p>
-         <br>
-         <br>
-        <input class="btn btn-primary" type="submit" name = "submit" value="Add university">
-    </form>
+                <div class="form-group">
+                    <label class="form-label country-label">University Country</label>
+                    <input type="text" name="country" class="form-control" value="<?php echo htmlspecialchars($country); ?>" placeholder="Enter university country" required>
+                </div>
 
+                <div class="form-group">
+                    <label class="form-label commission-label">University Commission</label>
+                    <input type="number" name="commission" class="form-control" value="<?php echo htmlspecialchars($commission); ?>" placeholder="Enter university commission (optional)" min="0" max="100" step="0.01">
+                </div>
+            </div>
 
-
-    <br>
-    <br>
+            <div style="text-align: center; margin-top: var(--spacing-2xl);">
+                <button class="btn-submit" type="submit" name="submit">
+                    Add University
+                </button>
+            </div>
+        </form>
+    </div>
+  </div>
 
 
     <!-- Optional JavaScript -->
@@ -189,6 +329,34 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+    <script>
+        function validateForm() {
+            // Basic form validation
+            var nameInput = document.querySelector('input[name="name"]');
+            var countryInput = document.querySelector('input[name="country"]');
+            var commissionInput = document.querySelector('input[name="commission"]');
+            
+            if (!nameInput.value.trim()) {
+                alert('Please enter university name');
+                return false;
+            }
+            
+            if (!countryInput.value.trim()) {
+                alert('Please enter university country');
+                return false;
+            }
+            
+            // Validate commission if provided
+            if (commissionInput.value.trim()) {
+                var commission = parseFloat(commissionInput.value);
+                if (isNaN(commission) || commission < 0 || commission > 100) {
+                    alert('Commission must be a number between 0 and 100');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+    </script>
 </body>
 </html>

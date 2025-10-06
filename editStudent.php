@@ -251,152 +251,383 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
     <script src="https://unpkg.com/react-phone-number-input@3.x/bundle/react-phone-number-input.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/react-phone-number-input@3.x/bundle/style.css"/>
-
 
     <title>Edit Student</title>
 
     <style>
+        /* Edit Student Design System Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
         #content {
-            width: 70%;
-            margin: auto;
-        }
-        #search-bar {
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
-            background-repeat: no-repeat;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-        }
-        .full-name {
-            font-weight: bold;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+            min-height: calc(100vh - 120px);
         }
 
         .navbar {
-            height: 150px;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
         }
 
-        .badge {
-            /* height: 30px; */
-            font-size: 15px;
-            color: white;
-            background-color: var(--pink) !important;
-            position: fixed;
-            right: 50%;
-        }
-        
-        .fw-bold {
-            font-weight: bold;
+        .edit-header {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            margin-bottom: var(--spacing-2xl);
+            backdrop-filter: blur(10px);
         }
 
-        .student-info {
-            font-size: 18px;
-            font-weight: bold;
+        .edit-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
         }
 
-        .title-info {
-            font-weight: bold;
-            color: var(--pink);
-            font-size: 20px;
+        .edit-title::before {
+            content: '\f044';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-xl);
+            color: var(--primary-color);
         }
 
-        .info-row {
-            display: inline; /* the default for span */
+        .form-section {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            margin-bottom: var(--spacing-xl);
         }
 
-        .statusSelect {
-            width: 100px;
-            height: 25px;
+        .form-group {
+            margin-bottom: var(--spacing-lg);
         }
 
-        input[name = "name"] {
-            width: 30%;
+        .form-label {
+            color: var(--primary-color);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
-        input[name = "highSchool"] {
-            width: 60%;
+        .form-label::before {
+            content: '\f007';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-base);
         }
 
-        input[name = "driveLink"] {
-            width: 60%;
+        .email-label::before {
+            content: '\f0e0';
         }
 
-        input[name = "phoneNumber"] {
-            width: 40%;
+        .parent-email-label::before {
+            content: '\f0e0';
         }
 
-        input[name = "email"] {
-            width: 50%;
+        .location-label::before {
+            content: '\f57c';
         }
 
-        .invalidPhoneNumber {
-            color: red;
+        .school-label::before {
+            content: '\f19c';
         }
 
-        .validPhoneNumber {
-            color: green;
+        .interest-label::before {
+            content: '\f0f3';
         }
 
-        input, select {
-            border-radius: 10px; /* Adjust the value to control the roundness */
-            padding: 8px 12px; /* Adjust padding as needed */
-            border: 1px solid #ccc; /* Add a border for visual distinction */
-        }
-        
-        input[type="radio"] {
-            margin-right: 8px;
-            margin-left: 15px;
-        }
-        
-        input[type="radio"]:first-child {
-            margin-left: 0;
-        }
-        
-        label {
-            margin-right: 20px;
-            font-weight: normal;
+        .drive-label::before {
+            content: '\f1c0';
         }
 
+        .phone-label::before {
+            content: '\f095';
+        }
+
+        .type-label::before {
+            content: '\f0c0';
+        }
+
+        .graduation-label::before {
+            content: '\f073';
+        }
+
+        .package-label::before {
+            content: '\f3d1';
+        }
+
+        .consultant-label::before {
+            content: '\f007';
+        }
+
+        .status-label::before {
+            content: '\f0f3';
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-row {
+            display: flex;
+            gap: var(--spacing-lg);
+            align-items: end;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-sm);
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+
+        .radio-item label {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            color: var(--text-color);
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .btn-submit {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-md) var(--spacing-2xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-lg);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-submit::before {
+            content: '\f0c7';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-base);
+        }
+
+        .char-count {
+            color: var(--secondary-color);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .grade-calculation {
+            margin-top: var(--spacing-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--primary-color);
+            font-size: var(--font-size-sm);
+        }
+
+        .phone-validation {
+            margin-top: var(--spacing-xs);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .valid-phone {
+            color: var(--success-color);
+        }
+
+        .invalid-phone {
+            color: var(--danger-color);
+        }
+
+        .alert {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid transparent;
+            font-weight: var(--font-weight-medium);
+        }
+
+        .alert-danger {
+            background: var(--danger-light);
+            color: var(--danger-dark);
+            border-color: var(--danger-color);
+        }
+
+        .alert-success {
+            background: var(--success-light);
+            color: var(--success-dark);
+            border-color: var(--success-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                padding: var(--spacing-md);
+            }
+
+            .edit-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .form-col {
+                width: 100%;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+        }
     </style>
   </head>
 
 
   <?php include("navbar.php"); ?>
 
-  <div id = "content">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+  <div id="content">
+    <div class="edit-header">
+      <h1 class="edit-title">Edit Student: <?php echo htmlspecialchars($studentData["name"]); ?></h1>
+      <?php if (isset($errorMail)) { ?>
+        <div class="alert alert-danger">
+          <i class="fas fa-exclamation-triangle"></i>
+          <?php echo htmlspecialchars($errorMail); ?>
+        </div>
+      <?php } ?>
+    </div>
 
-    <h1 style = "color: rgba(79, 35, 95, .9);"> Edit Student <?php echo $studentData["name"]; ?> </h1>
-    <br>
-    <br>
-    <form method = "post" onsubmit = "return validateForm()">
-        <p class = "student-info"> <span class = "title-info"> Student Name: </span> <input value = "<?php echo $studentData['name'];?>" type = "text" name = "name" placeholder = "Student's full name" required /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Student's Email: </span> <input value = "<?php echo $studentData['email']; ?>" type = "email" name = "email" placeholder = "Student's email" required /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Parent's Email: </span> <input value = "<?php echo $studentData['emailParent']; ?>" type = "email" name = "emailParent" placeholder = "Parent's email" /> </p>
-        <?php
-        if (isset($errorMail)) {
-            ?> <span style = "color: red;"> <?php echo $errorMail; ?> </span> <br> <?php
-        }?>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Location: </span> <input value = "<?php echo $studentData['judet']; ?>" type = "text" name = "judet" placeholder = "Student's location" /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> HighSchool: </span> <input value = "<?php echo $studentData['highSchool']; ?>" type = "text" name = "highSchool" placeholder = "Student's HighSchool" required /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Field of Interest: </span> 
-            <select name="interest">
-                <option value="">Select Field of Interest</option>
+    <div class="form-section">
+      <form method="post" onsubmit="return validateForm()">
+        <div class="form-group">
+          <label class="form-label" for="name">Student Name</label>
+          <input value="<?php echo htmlspecialchars($studentData['name']); ?>" type="text" name="name" id="name" class="form-control" placeholder="Student's full name" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label email-label" for="email">Student's Email</label>
+          <input value="<?php echo htmlspecialchars($studentData['email']); ?>" type="email" name="email" id="email" class="form-control" placeholder="Student's email" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label parent-email-label" for="emailParent">Parent's Email</label>
+          <input value="<?php echo htmlspecialchars($studentData['emailParent']); ?>" type="email" name="emailParent" id="emailParent" class="form-control" placeholder="Parent's email" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label location-label" for="judet">Location</label>
+          <input value="<?php echo htmlspecialchars($studentData['judet']); ?>" type="text" name="judet" id="judet" class="form-control" placeholder="Student's location" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label school-label" for="highSchool">High School</label>
+          <input value="<?php echo htmlspecialchars($studentData['highSchool']); ?>" type="text" name="highSchool" id="highSchool" class="form-control" placeholder="Student's High School" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label interest-label" for="interest">Field of Interest</label>
+          <select name="interest" id="interest" class="form-select">
+            <option value="">Select Field of Interest</option>
                 <?php if ($studentData['interest'] == 'Architecture') { ?>
                     <option value="Architecture" selected>Architecture</option>
                 <?php } else { ?>
@@ -546,124 +777,126 @@
                 <?php } else { ?>
                     <option value="Undecided">Undecided</option>
                 <?php } ?>
-            </select>
-        </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Drive Link: </span> <input value = "<?php echo $studentData['driveLink'];?>" type = "text" name = "driveLink" placeholder = "Student's Drive Link" required /> </p>
-        <br>
-        <p class = "student-info"> <span class = "title-info"> Phone number: </span> 
-            <input value = "<?php echo $studentData['phoneNumber']; ?>" name = "phoneNumber" type="tel" id="phoneInput" placeholder = "Enter your phone number" pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$" required>
-            <div id="statusPhoneNumber" class = "validPhoneNumber">Valid phone number</div>
-        </p>
-        <br>
-        <p class="student-info">
-            <span class="title-info">Student Type: </span>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label drive-label" for="driveLink">Drive Link</label>
+          <input value="<?php echo htmlspecialchars($studentData['driveLink']); ?>" type="text" name="driveLink" id="driveLink" class="form-control" placeholder="Student's Drive Link" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label phone-label" for="phoneInput">Phone Number</label>
+          <input value="<?php echo htmlspecialchars($studentData['phoneNumber']); ?>" name="phoneNumber" type="tel" id="phoneInput" class="form-control" placeholder="Enter your phone number" pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$" required>
+          <div id="statusPhoneNumber" class="phone-validation valid-phone">Valid phone number</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label type-label">Student Type</label>
+          <div class="radio-group">
             <?php 
             $isBachelor = isset($studentData['isMaster']) ? $studentData['isMaster'] : 0;
             ?>
-            <label><input type="radio" name="isBachelor" value="0" <?php echo ($isBachelor == 0) ? 'checked' : ''; ?> required onchange="toggleGraduationInput()"> High School Student</label>
-            <label><input type="radio" name="isBachelor" value="1" <?php echo ($isBachelor == 1) ? 'checked' : ''; ?> required onchange="toggleGraduationInput()"> Bachelor Student</label>
-        </p>
-        <br>
-        <p class="student-info" id="graduationYearSection" style="display: block;">
-            <span class="title-info" id="graduationLabel"><?php echo ($isBachelor == 1) ? 'Contract End Year: ' : 'Graduation Year: '; ?></span>
-            <input type="number" name="graduationYear" id="graduationYearInput" min="2024" max="2030" value="<?php echo isset($studentData['graduationYear']) ? $studentData['graduationYear'] : ''; ?>" placeholder="<?php echo ($isBachelor == 1) ? 'Enter contract end year' : 'Enter graduation year'; ?>" required onchange="calculateGrade()">
-            <div id="gradeCalculation" style="margin-top: 10px; font-weight: bold; color: #4f235f;"></div>
-        </p>
-         <br>
+            <div class="radio-item">
+              <input type="radio" name="isBachelor" value="0" id="highSchool" <?php echo ($isBachelor == 0) ? 'checked' : ''; ?> required onchange="toggleGraduationInput()">
+              <label for="highSchool">High School Student</label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="isBachelor" value="1" id="bachelor" <?php echo ($isBachelor == 1) ? 'checked' : ''; ?> required onchange="toggleGraduationInput()">
+              <label for="bachelor">Bachelor Student</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" id="graduationYearSection" style="display: block;">
+          <label class="form-label graduation-label" id="graduationLabel" for="graduationYearInput"><?php echo ($isBachelor == 1) ? 'Contract End Year' : 'Graduation Year'; ?></label>
+          <input type="number" name="graduationYear" id="graduationYearInput" class="form-control" min="2024" max="2030" value="<?php echo isset($studentData['graduationYear']) ? $studentData['graduationYear'] : ''; ?>" placeholder="<?php echo ($isBachelor == 1) ? 'Enter contract end year' : 'Enter graduation year'; ?>" required onchange="calculateGrade()">
+          <div id="gradeCalculation" class="grade-calculation"></div>
+        </div>
          <!--UPDATE ALSO PACKAGE FEATURE IN DEV-->
          <?php if ($_SESSION['type'] == 1) { ?> 
-         <p class = "student-info"> <span class = "title-info"> Package type: </span> 
-            <select id="package" name="package" required>
-                <?php if ($studentData['packageType'] == 'US') { ?>
-                    <option value="US" selected>US</option>
-                <?php } else { ?> 
-                    <option value="US">US</option>
-                <?php } ?>
+         <div class="form-group">
+           <label class="form-label package-label" for="package">Package Type</label>
+           <select id="package" name="package" class="form-select" required>
+             <?php if ($studentData['packageType'] == 'US') { ?>
+               <option value="US" selected>US</option>
+             <?php } else { ?> 
+               <option value="US">US</option>
+             <?php } ?>
 
-                <?php if ($studentData['packageType'] == 'USP') { ?>
-                    <option value="USP" selected>US Premium</option>
-                <?php } else { ?> 
-                    <option value="USP">US Premium</option>
-                <?php } ?>
+             <?php if ($studentData['packageType'] == 'USP') { ?>
+               <option value="USP" selected>US Premium</option>
+             <?php } else { ?> 
+               <option value="USP">US Premium</option>
+             <?php } ?>
 
-                <?php if ($studentData['packageType'] == 'USAP') { ?>
-                    <option value="USAP" selected>US Advanced Package</option>
-                <?php } else { ?> 
-                    <option value="USAP">US Advanced Package</option>
-                <?php } ?>
+             <?php if ($studentData['packageType'] == 'USAP') { ?>
+               <option value="USAP" selected>US Advanced Package</option>
+             <?php } else { ?> 
+               <option value="USAP">US Advanced Package</option>
+             <?php } ?>
 
-                <?php if ($studentData['packageType'] == 'EU') { ?>
-                    <option value="EU" selected>Europe</option>
-                <?php } else { ?>
-                    <option value="EU">Europe</option>
-                <?php } ?>
+             <?php if ($studentData['packageType'] == 'EU') { ?>
+               <option value="EU" selected>Europe</option>
+             <?php } else { ?>
+               <option value="EU">Europe</option>
+             <?php } ?>
 
-                <?php if ($studentData['packageType'] == 'EUP') { ?>
-                    <option value="EUP" selected>Europe Premium</option>
-                <?php } else { ?>
-                    <option value="EUP">Europe Premium</option>
-                <?php } ?>
-            </select>
-         </p>
-         <br>
+             <?php if ($studentData['packageType'] == 'EUP') { ?>
+               <option value="EUP" selected>Europe Premium</option>
+             <?php } else { ?>
+               <option value="EUP">Europe Premium</option>
+             <?php } ?>
+           </select>
+         </div>
 
-         <p> 
-            <span class = "title-info"> Package Details: </span> 
-            <p id="charCount">0 / 1000</p> 
-
-            <textarea id="textBox" name="packageDetails" maxlength="1000" rows="10" cols="50" placeholder="Enter package details (max 1000 characters)..." oninput="updateCharCount()"><?php echo $studentData['packageDetails']; ?></textarea>
-         </p>
+         <div class="form-group">
+           <label class="form-label" for="textBox">Package Details</label>
+           <div id="charCount" class="char-count">0 / 1000</div>
+           <textarea id="textBox" name="packageDetails" class="form-textarea" maxlength="1000" rows="10" placeholder="Enter package details (max 1000 characters)..." oninput="updateCharCount()"><?php echo htmlspecialchars($studentData['packageDetails']); ?></textarea>
+         </div>
          <?php } ?>
-         <p class = "student-info"> <span class = "title-info"> Consultant: </span> 
-            <select name="consultant" required>
-                <?php if ($typeAccount == 1) { ?>
-                    <option value="" selected>Select consultant</option>
-                <?php } ?>
-                <?php
-                    for ($i = 0; $i < $nConsultant; $i++) {
-                        if ($vIdConsultant[$i] == $studentData['consultantId']) {?>
-                            <option value="<?php echo $vIdConsultant[$i]; ?>" selected> <?php echo $vNameConsultant[$i]; ?> </option> <?php
-                        }
-                        else { ?>
-                            <option value="<?php echo $vIdConsultant[$i]; ?>"> <?php echo $vNameConsultant[$i]; ?> </option>
-                        <?php }
-                    }
-                ?>
-            </select>
-         </p>
+         <div class="form-group">
+           <label class="form-label consultant-label" for="consultant">Consultant</label>
+           <select name="consultant" id="consultant" class="form-select" required>
+             <?php if ($typeAccount == 1) { ?>
+               <option value="" selected>Select consultant</option>
+             <?php } ?>
+             <?php
+               for ($i = 0; $i < $nConsultant; $i++) {
+                 if ($vIdConsultant[$i] == $studentData['consultantId']) {?>
+                   <option value="<?php echo htmlspecialchars($vIdConsultant[$i]); ?>" selected><?php echo htmlspecialchars($vNameConsultant[$i]); ?></option>
+                 <?php } else { ?>
+                   <option value="<?php echo htmlspecialchars($vIdConsultant[$i]); ?>"><?php echo htmlspecialchars($vNameConsultant[$i]); ?></option>
+                 <?php }
+               }
+             ?>
+           </select>
+         </div>
 
-         <br>
+         <div class="form-group">
+           <label class="form-label status-label" for="status">Status</label>
+           <?php
+               $stringActive = "";
+               $stringGraduated = "";
+               $stringDeleted = "";
 
-         <p class = "student-info"> <span class = "title-info"> Status: </span> 
-            <?php
-                $stringActive = "";
-                $stringGraduated = "";
-                $stringDeleted = "";
-
-                if ($studentData["activityStatus"] == 0)
-                    $stringActive = "selected";
-                else if ($studentData["activityStatus"] == 1)
-                    $stringGraduated = "selected";
-                else
-                    $stringDeleted = "selected";
-            ?>
-            <select id="status" name="activityStatus" required>
-                <option value = "0" <?php echo $stringActive; ?>> Active </option>
-                <option value = "1" <?php echo $stringGraduated; ?>> Graduated </option>
-                <option value = "2" <?php echo $stringDeleted; ?>> Deleted </option>
-            </select>
-         </p>
+               if ($studentData["activityStatus"] == 0)
+                   $stringActive = "selected";
+               else if ($studentData["activityStatus"] == 1)
+                   $stringGraduated = "selected";
+               else
+                   $stringDeleted = "selected";
+           ?>
+           <select id="status" name="activityStatus" class="form-select" required>
+             <option value="0" <?php echo $stringActive; ?>>Active</option>
+             <option value="1" <?php echo $stringGraduated; ?>>Graduated</option>
+             <option value="2" <?php echo $stringDeleted; ?>>Deleted</option>
+           </select>
+         </div>
          
-         <br>
-         <br>
-        <input class="btn btn-primary" type="submit" name = "submit" value="Edit Information">
-    </form>
-
-
-
-    <br>
-    <br>
+         <div class="form-group">
+           <button class="btn-submit" type="submit" name="submit">Update Student Information</button>
+         </div>
+       </form>
+     </div>
 
 
     <!-- Optional JavaScript -->
@@ -767,14 +1000,13 @@
             const phoneNumber = phoneInput.value;
             
             if (validatePhoneNumber(phoneNumber)) {
-                invalidPhoneNumberDisplay.textContent = 'Valid phnoe number';
-                invalidPhoneNumberDisplay.classList.remove("invalidPhoneNumber");
-                invalidPhoneNumberDisplay.classList.add("validPhoneNumber");
-
+                invalidPhoneNumberDisplay.textContent = 'Valid phone number';
+                invalidPhoneNumberDisplay.classList.remove("invalid-phone");
+                invalidPhoneNumberDisplay.classList.add("valid-phone");
             } else {
                 invalidPhoneNumberDisplay.textContent = 'Invalid phone number';
-                invalidPhoneNumberDisplay.classList.add("invalidPhoneNumber");
-                invalidPhoneNumberDisplay.classList.remove("validPhoneNumber");
+                invalidPhoneNumberDisplay.classList.add("invalid-phone");
+                invalidPhoneNumberDisplay.classList.remove("valid-phone");
             }
         });
 

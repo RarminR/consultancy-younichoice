@@ -32,83 +32,111 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <title>Packages List</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
+    
+    <title>Packages List - Youni</title>
 
     <style>
-        :root {
-            --primary-color: #4a90e2;
-            --secondary-color: #f8f9fa;
-            --accent-color: #28a745;
-            --text-color: #333;
-            --border-color: #dee2e6;
-            --gradient-start: #4f235f;
-            --gradient-end: #cb1b80;
+        body {
+            background: var(--bg-gradient-primary);
+            font-family: var(--font-family-primary);
+            min-height: 100vh;
         }
 
-        body {
-            background-color: #f5f7fa;
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        .packages-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: var(--spacing-2xl) auto;
+            padding: var(--spacing-lg);
+        }
+
+        .packages-header {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .packages-title {
+            color: var(--primary-color);
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .packages-subtitle {
+            color: var(--secondary-color);
+            font-size: var(--font-size-lg);
         }
 
         .selector-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 25px;
-            margin-bottom: 30px;
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-lg);
         }
 
         .form-label {
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 8px;
+            font-weight: var(--font-weight-semibold);
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
             display: block;
+            font-size: var(--font-size-lg);
         }
 
         .form-select {
             width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background-color: white;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            transition: var(--transition-normal);
+            background-color: var(--white);
+            color: var(--text-color);
         }
 
         .form-select:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            box-shadow: 0 0 0 3px rgba(79, 35, 95, 0.1);
         }
 
         .btn-edit {
-            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            background: var(--primary-gradient);
             border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            color: white;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            transition: var(--transition-normal);
+            color: var(--white);
             text-decoration: none;
             display: inline-block;
+            font-size: var(--font-size-base);
         }
 
         .btn-edit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow-lg);
             opacity: 0.9;
-            color: white;
+            color: var(--white);
             text-decoration: none;
         }
 
         .btn-edit:disabled {
-            background: #6c757d;
+            background: var(--gray);
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -120,61 +148,63 @@
 
         .select-container::after {
             content: '\f107';
-            font-family: 'Font Awesome 5 Free';
+            font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             position: absolute;
-            right: 15px;
+            right: var(--spacing-lg);
             top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
-            color: #6c757d;
+            color: var(--secondary-color);
         }
 
         #contentStudents {
-            width: 80%;
-            margin: 20px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin: var(--spacing-xl) auto;
+            background: var(--white);
+            padding: var(--spacing-2xl);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
         }
 
         .package-category {
-            margin-bottom: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: var(--spacing-xl);
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-gray);
         }
 
         .category-header {
-            padding: 15px 20px;
-            background: var(--secondary-color);
-            border-radius: 10px;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: var(--light-gray);
+            border-radius: var(--border-radius-lg);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background-color 0.3s;
+            transition: var(--transition-normal);
         }
 
         .category-header:hover {
-            background: #e9ecef;
+            background: var(--gray);
         }
 
         .category-title {
             color: var(--primary-color);
-            font-weight: 600;
+            font-weight: var(--font-weight-semibold);
             margin: 0;
             display: flex;
             align-items: center;
+            font-size: var(--font-size-lg);
         }
 
         .category-title i {
-            margin-right: 10px;
+            margin-right: var(--spacing-sm);
         }
 
         .category-arrow {
-            transition: transform 0.3s;
+            transition: var(--transition-normal);
         }
 
         .category-arrow.expanded {
@@ -189,81 +219,98 @@
         }
 
         .category-content.expanded {
-            padding: 20px;
+            padding: var(--spacing-xl);
             max-height: 2000px;
         }
 
         .package-item {
-            background: var(--secondary-color);
-            border-radius: 8px;
-            margin-bottom: 15px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            background: var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: var(--spacing-lg);
+            transition: var(--transition-normal);
+            padding: var(--spacing-lg);
         }
 
         .package-item:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-md);
         }
 
         .package-name {
-            font-weight: 600;
-            font-size: 1.1em;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-lg);
             color: var(--text-color);
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
+            background: var(--primary-gradient);
             border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius-full);
+            transition: var(--transition-normal);
+            color: var(--white);
+            font-weight: var(--font-weight-medium);
         }
 
         .btn-primary:hover {
-            background-color: #357abd;
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-md);
         }
 
         .package-info {
-            margin-left: 15px;
-            color: #666;
-            font-size: 0.9em;
+            margin-left: var(--spacing-lg);
+            color: var(--secondary-color);
+            font-size: var(--font-size-sm);
         }
 
         .package-type-badge {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            margin-left: 10px;
+            background: var(--success-gradient);
+            color: var(--white);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-xs);
+            margin-left: var(--spacing-sm);
         }
 
         .package-count {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            margin-left: 10px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-xs);
+            margin-left: var(--spacing-sm);
         }
 
         .edit-section {
             text-align: center;
-            padding: 20px;
-            background: var(--secondary-color);
-            border-radius: 12px;
-            margin-top: 20px;
+            padding: var(--spacing-xl);
+            background: var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            margin-top: var(--spacing-xl);
         }
 
         .package-grade-badge {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            margin-left: 5px;
+            background: var(--success-gradient);
+            color: var(--white);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-xs);
+            margin-left: var(--spacing-xs);
+        }
+
+        @media (max-width: 768px) {
+            .packages-container {
+                width: 95%;
+                padding: var(--spacing-md);
+            }
+            
+            .selector-container {
+                padding: var(--spacing-lg);
+            }
+            
+            #contentStudents {
+                padding: var(--spacing-lg);
+            }
         }
     </style>
     
@@ -272,16 +319,16 @@
   
   <?php include("navbar.php"); ?>
 
-  <div class="container-fluid mt-5">
-    <div id="contentStudents">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1><i class="fas fa-box"></i> Packages List</h1>
-        </div>
+  <div class="packages-container">
+    <div class="packages-header">
+      <h1 class="packages-title"><i class="fas fa-box"></i> Packages List</h1>
+      <p class="packages-subtitle">Manage and organize student packages by grade and type</p>
+    </div>
 
-        <!-- Package Selector Section -->
-        <div class="selector-container">
-            <h3><i class="fas fa-search"></i> Quick Package Selector</h3>
-            <form method="POST" action="">
+    <!-- Package Selector Section -->
+    <div class="selector-container">
+        <h3><i class="fas fa-search"></i> Quick Package Selector</h3>
+        <form method="POST" action="">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">

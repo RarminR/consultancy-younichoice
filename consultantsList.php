@@ -30,142 +30,225 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="student/design-system.css">
     <title>Consultants List</title>
 
     <style>
-        :root {
-            --primary-color: #4f235f;
-            --secondary-color: #6c757d;
-            --accent-color: #007bff;
-            --background-color: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
+        /* Consultants List Design System Styles */
         body {
-            background-color: #f5f7fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
         #content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
-            margin-top: 100px;
-        }
-
-        #contentStudents {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            padding: 30px;
-            position: relative;
-            z-index: 1;
+            padding: var(--spacing-2xl);
+            min-height: calc(100vh - 120px);
         }
 
         .navbar {
-            height: 80px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--light-gray);
         }
 
-        h1 {
+        .consultants-container {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--light-gray);
+            backdrop-filter: blur(10px);
+        }
+
+        .consultants-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .consultants-title {
             color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
         }
 
-        .search-container {
-            margin-bottom: 30px;
-        }
-
-        #search-bar {
-            width: 100%;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: white;
-            box-shadow: var(--card-shadow);
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
-            background-repeat: no-repeat;
-        }
-
-        #search-bar:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-        }
-
-        .list-group-item {
-            margin-bottom: 15px;
-            border-radius: 8px !important;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-            padding: 20px;
-        }
-
-        .list-group-item:hover {
-            box-shadow: var(--hover-shadow);
-            transform: translateY(-2px);
-        }
-
-        .consultant-name {
-            font-weight: 600;
+        .consultants-title::before {
+            content: '\f0c0';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-2xl);
             color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-color);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
         }
 
         .btn-add-consultant {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            margin-bottom: 30px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            margin-bottom: var(--spacing-2xl);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            border: none;
         }
 
         .btn-add-consultant:hover {
-            background-color: #cb1b80;
             transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
-            color: white;
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
             text-decoration: none;
+        }
+
+        .btn-add-consultant::before {
+            content: '\f067';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
+        }
+
+        .search-container {
+            margin-bottom: var(--spacing-2xl);
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-3xl);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+            background: var(--white);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-lg);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: var(--font-size-lg);
+            pointer-events: none;
         }
 
         .search-count {
             color: var(--primary-color);
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            padding: var(--spacing-md);
+            background: var(--light-bg);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .consultants-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .consultant-item {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition-normal);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .consultant-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .consultant-info {
+            flex: 1;
+        }
+
+        .consultant-name {
+            color: var(--primary-color);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .consultant-name::before {
+            content: '\f007';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
+        }
+
+        .btn-view-details {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+        }
+
+        .btn-view-details:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-view-details::after {
+            content: '\f061';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: var(--font-size-sm);
         }
 
         /* Custom scrollbar */
@@ -174,17 +257,39 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius-sm);
         }
 
         ::-webkit-scrollbar-thumb {
             background: var(--secondary-color);
-            border-radius: 4px;
+            border-radius: var(--border-radius-sm);
         }
 
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #content {
+                padding: var(--spacing-md);
+            }
+
+            .consultants-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .consultant-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-lg);
+            }
+
+            .btn-view-details {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
   </head>
@@ -192,40 +297,45 @@
   <?php include("navbar.php"); ?>
 
   <div id="content">
-    <div id="contentStudents">
-        <h1>Consultants List</h1>
+    <div class="consultants-container">
+        <div class="consultants-header">
+            <h1 class="consultants-title">Consultants List</h1>
+        </div>
 
         <a href="addConsultant.php" class="btn-add-consultant">
-            <i class="fas fa-plus"></i> Add Consultant
+            Add Consultant
         </a>
 
         <div class="search-container">
-            <input type="text" id="search-bar" onkeyup="searchFunction()" placeholder="Search consultants..." title="Type in a name">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="search-bar" class="search-bar" onkeyup="searchFunction()" placeholder="Search consultants..." title="Type in a name">
         </div>
 
-        <p>There are <span class="search-count"><?php echo $noConsultants; ?></span> consultants</p>
+        <div class="search-count">
+            <i class="fas fa-users"></i>
+            There are <strong><?php echo $noConsultants; ?></strong> consultants
+        </div>
 
-        <ol id="consultants-list" class="list-group list-group-numbered">
+        <ul id="consultants-list" class="consultants-list">
             <?php 
             // Fetch consultants from database
             $sqlConsultants = "SELECT * FROM users WHERE type = 0";
             $queryConsultants = mysqli_query($link, $sqlConsultants);
             $noConsultants = mysqli_num_rows($queryConsultants);
 
-            while ($consultant = mysqli_fetch_assoc($queryConsultants)) { ?>
-                <div class="consultant">
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="consultant-name"><?php echo $consultant['fullName']; ?></div>
-                        </div>
-                        <?php $urlConsultant = "consultant.php?consultantId=" . $consultant['userId']; ?>
-                        <a href="<?php echo $urlConsultant; ?>">
-                            <button type="button" class="btn btn-primary">More Details</button>
-                        </a>
-                    </li>
-                </div>
+            while ($consultant = mysqli_fetch_assoc($queryConsultants)) { 
+                $urlConsultant = "consultant.php?consultantId=" . $consultant['userId'];
+            ?>
+                <li class="consultant-item">
+                    <div class="consultant-info">
+                        <div class="consultant-name"><?php echo htmlspecialchars($consultant['fullName']); ?></div>
+                    </div>
+                    <a href="<?php echo $urlConsultant; ?>" class="btn-view-details">
+                        More Details
+                    </a>
+                </li>
             <?php } ?>
-        </ol>
+        </ul>
     </div>
   </div>
 
@@ -238,11 +348,12 @@
         var input = document.getElementById("search-bar");
         var filter = input.value.toUpperCase();
         var list = document.getElementById("consultants-list");
-        var consultants = list.getElementsByClassName("consultant");
+        var consultants = list.getElementsByClassName("consultant-item");
         var countDisplay = 0;
 
         for (var i = 0; i < consultants.length; i++) {
-            var name = consultants[i].getElementsByClassName("consultant-name")[0].innerHTML;
+            var nameElement = consultants[i].getElementsByClassName("consultant-name")[0];
+            var name = nameElement ? nameElement.textContent || nameElement.innerText : "";
             
             if (name.toUpperCase().indexOf(filter) > -1) {
                 consultants[i].style.display = "";
@@ -252,7 +363,10 @@
             }
         }
 
-        document.getElementsByClassName("search-count")[0].innerHTML = countDisplay;
+        var searchCountElement = document.querySelector(".search-count strong");
+        if (searchCountElement) {
+            searchCountElement.textContent = countDisplay;
+        }
     }
   </script>
 </body>
