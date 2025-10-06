@@ -1,0 +1,62 @@
+name: Deploy • Local Docker Staging
+
+on:
+  push:
+    branches: [develop]     # runs after PR merge to develop
+  workflow_dispatch:        # allow manual run
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, stg-docker]   # <— label of your self-hosted runner
+    # remove the next line if you didn't create a staging Environment in GitHub
+    environment: staging
+    concurrency:
+      group: staging-deploy
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker info
+        run: docker info
+
+      - name: Start staging DB (if not up)
+        run: docker compose --profile staging up -d db-stg
+
+      - name: Backup staging DB
+        run: |
+          mkdir -p backups
+          docker compose exec -T db-stg sh -lc \
+            'mysqldump -ustg -pstgpass myapp_stg | gzip -c' \
+            > backups/stg_$(date +%F_%H%M).sql.gz
+
+      - name: Apply migrations (sorted)
+        shell: bash
+        run: |
+          shopt -s nullglob
+          for f in $(ls -1 db/migrations/*.sql 2>/dev/null | sort); do
+            echo "Applying $f"
+            docker compose exec -T db-stg sh -lc \
+              "mysql -ustg -pstgpass myapp_stg < /var/www/html/$f"
+          done
+          echo "DB migrated."
+
+      - name: Build + bounce app-stg
+        run: |
+          docker compose build app-stg
+          docker compose up -d --force-recreate app-stg
+
+      - name: Health check
+        shell: bash
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:8085/ > /dev/null; then
+              echo "Staging is healthy."
+              exit 0
+            fi
+            echo "Waiting for app-stg... ($i/30)"
+            sleep 2
+          done
+          echo "App did not become healthy in time." >&2
+          docker compose logs --no-color app-stg | tail -n 200
+          exit 1
